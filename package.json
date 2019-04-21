@@ -1,0 +1,30 @@
+{
+  "name": "tba-creator",
+  "version": "0.0.1",
+  "description": "Text-Based Adventure Creator - Turn data into a TBA game!",
+  "main": "src/index.ts",
+  "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
+  "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/**/*.ts",
+    "pretty": "prettier --write \"src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.6",
+    "@typescript-eslint/eslint-plugin": "1.7.0",
+    "@typescript-eslint/parser": "1.7.0",
+    "eslint": "5.16.0",
+    "eslint-config-prettier": "4.1.0",
+    "jest": "24.7.1",
+    "prettier": "1.17.0",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.1.0",
+    "typescript": "3.4.4"
+  }
+}
