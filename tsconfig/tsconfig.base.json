@@ -1,0 +1,16 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "system",
+    "strict": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "declaration": true,
+    "newLine": "LF"
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

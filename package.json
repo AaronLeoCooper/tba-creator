@@ -6,9 +6,16 @@
   "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "create-tba-game": "build/create-tba-game.js",
+    "tba-creator": "build/tba-creator.js",
+    "tbac": "build/tba-creator.js"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc",
+    "build": "npm run build:src && num run build:create",
+    "build:src": "tsc -p \"tsconfig.json\"",
+    "build:create": "tsc -p \"create.tsconfig.json\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts",
