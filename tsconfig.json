@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "target": "es6",
-    "module": "system",
+    "module": "es6",
     "strict": true,
     "removeComments": false,
     "outFile": "./build/tba.js",

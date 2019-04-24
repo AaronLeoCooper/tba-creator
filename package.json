@@ -26,5 +26,8 @@
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
     "typescript": "3.4.4"
+  },
+  "dependencies": {
+    "toml": "^3.0.0"
   }
 }
