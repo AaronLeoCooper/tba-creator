@@ -1,9 +1,14 @@
 {
   "extends": "./tsconfig/tsconfig.base",
   "compilerOptions": {
-    "outFile": "./build/create-tba-game.js"
+    "outDir": "./build/create-tba-game",
+    "baseUrl": "create-tba-game"
   },
   "include": [
     "create-tba-game/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
   ]
 }

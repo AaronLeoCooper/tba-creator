@@ -7,19 +7,25 @@
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
   "bin": {
-    "create-tba-game": "build/create-tba-game.js",
-    "tba-creator": "build/tba-creator.js",
-    "tbac": "build/tba-creator.js"
+    "tba-creator": "build/tba-creator/index.js",
+    "tbac": "build/tba-creator/index.js",
+    "create-tba-game": "build/create-tba-game/index.js"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "npm run build:src && num run build:create",
+    "start": "ts-node \"src/index.ts\"",
+    "start:create": "ts-node \"create-tba-game/index.ts\"",
+    "build": "run-s clean build:*",
     "build:src": "tsc -p \"tsconfig.json\"",
-    "build:create": "tsc -p \"create.tsconfig.json\"",
+    "build:create": "tsc -p \"tsconfig.create.json\"",
+    "clean": "rimraf \"./build\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint src/**/*.ts",
-    "pretty": "prettier --write \"src/**/*.ts\""
+    "lint": "run-s lint:*",
+    "lint:src": "eslint \"src/**/*.ts\"",
+    "lint:create": "eslint \"create-tba-game/**/*.ts\"",
+    "pretty": "run-s pretty:*",
+    "pretty:src": "prettier --write \"src/**/*.ts\"",
+    "pretty:create": "prettier --write \"create-tba-game/**/*.ts\""
   },
   "devDependencies": {
     "@types/jest": "24.0.11",
@@ -29,12 +35,14 @@
     "eslint": "5.16.0",
     "eslint-config-prettier": "4.1.0",
     "jest": "24.7.1",
+    "npm-run-all": "4.1.5",
     "prettier": "1.17.0",
+    "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
-    "ts-node": "8.1.0",
-    "typescript": "3.4.4"
+    "ts-node": "8.1.0"
   },
   "dependencies": {
-    "toml": "^3.0.0"
+    "toml": "^3.0.0",
+    "typescript": "3.4.4"
   }
 }

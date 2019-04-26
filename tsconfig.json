@@ -1,9 +1,14 @@
 {
   "extends": "./tsconfig/tsconfig.base",
   "compilerOptions": {
-    "outFile": "./build/tba-creator.js"
+    "outDir": "./build/tba-creator",
+    "baseUrl": "src"
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
   ]
 }
