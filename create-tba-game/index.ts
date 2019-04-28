@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as inquirer from 'inquirer';
 import { Question, Answers } from 'inquirer';
 

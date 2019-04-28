@@ -31,7 +31,10 @@ export default function create(options: CreateOptions): void {
   const targetPath = resolve(process.cwd(), dirName);
 
   if (existsSync(targetPath)) {
-    throw new Error(`Target folder already exists, enter a new folder name`);
+    console.error(`Target folder already exists, enter a new folder name`);
+
+    process.exit(1);
+    return;
   }
 
   mkdirSync(targetPath);
@@ -52,4 +55,9 @@ export default function create(options: CreateOptions): void {
 
     writeFileSync(outFilePath, outFileContent);
   });
+
+  console.log(
+    `Created ${dirName} folder successfully. ` +
+    'Change to that folder and run npm install.'
+  );
 }
