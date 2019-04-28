@@ -12,8 +12,8 @@
     "create-tba-game": "build/create-tba-game/index.js"
   },
   "scripts": {
-    "start": "ts-node \"src/index.ts\"",
-    "start:create": "ts-node \"create-tba-game/index.ts\"",
+    "start": "ts-node --project \"tsconfig.json\" \"src/index.ts\"",
+    "start:create": "ts-node --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
     "build": "run-s clean build:*",
     "build:src": "tsc -p \"tsconfig.json\"",
     "build:create": "tsc -p \"tsconfig.create.json\"",
@@ -28,6 +28,7 @@
     "pretty:create": "prettier --write \"create-tba-game/**/*.ts\""
   },
   "devDependencies": {
+    "@types/inquirer": "6.0.1",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.6",
     "@typescript-eslint/eslint-plugin": "1.7.0",
@@ -42,6 +43,7 @@
     "ts-node": "8.1.0"
   },
   "dependencies": {
+    "inquirer": "^6.3.1",
     "toml": "^3.0.0",
     "typescript": "3.4.4"
   }

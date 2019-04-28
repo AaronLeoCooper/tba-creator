@@ -1,0 +1,10 @@
+{
+  "name": "$title$",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "tbac main.toml"
+  },
+  "dependencies": {
+    "tba-creator": "$version$"
+  }
+}

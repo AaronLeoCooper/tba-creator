@@ -1,0 +1,14 @@
+[description]
+name = "$title$"
+about = "$about$"
+
+[options.scene]
+preDelayMs = 0 # Delay in milliseconds before a new scene is displayed
+postDelayMs = 0 # Delay in milliseconds after a scene is displayed (before allowing input)
+
+[options.input]
+caseSensitive = false # Forces case-sensitivity when checking user input
+quitPhrases = [ "quit" ] # Phrases that will close the program (whitespace is ignored)
+unknownPhraseWarnings = [ # Displays a message randomly when the user enters an unknown phrase
+  "Sorry, I don't understand.",
+]
