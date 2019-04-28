@@ -1,11 +1,11 @@
 {
   "extends": "./tsconfig/tsconfig.base",
   "compilerOptions": {
-    "outDir": "./build/tba-creator",
-    "baseUrl": "src"
+    "outDir": "./build/create-tba-game",
+    "baseUrl": "create-tba-game"
   },
   "include": [
-    "src/**/*"
+    "create-tba-game/**/*"
   ],
   "exclude": [
     "node_modules",

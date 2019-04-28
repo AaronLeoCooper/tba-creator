@@ -1,0 +1,14 @@
+# Actions
+[[actions]]
+name = "walk"
+aka = [ "walk", "run", "hop", "skip" ]
+
+# Entities
+[[entities]]
+name = "north"
+aka = [ "north", "n" ]
+
+# Phrases
+[[phrases]]
+name = "yes"
+aka = [ "yes", "y", "yup" ]

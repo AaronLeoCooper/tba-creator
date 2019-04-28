@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     '\\.ts$': 'ts-jest'
   },
-  testRegex: 'src/.*\\.spec\\.ts$'
+  testRegex: '(src|create-tba-game)/.*\\.spec\\.ts$'
 };
