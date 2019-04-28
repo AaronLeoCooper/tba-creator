@@ -1,8 +1,6 @@
 import { readdirSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { version } from '../package.json';
-
 type Template = 'basic';
 
 export interface CreateOptions {
@@ -25,7 +23,7 @@ export default function create(options: CreateOptions): void {
   const replacements = [
     ['title', title],
     ['about', about],
-    ['version', version]
+    ['version', '*']
   ];
 
   const targetPath = resolve(process.cwd(), dirName);
