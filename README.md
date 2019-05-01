@@ -96,7 +96,6 @@ aka = [ "take", "grab" ]
 
 [[actions]]
 name = "open"
-aka = [ "open" ]
 
 # Entities
 [[entities]]

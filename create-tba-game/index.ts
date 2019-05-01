@@ -8,8 +8,7 @@ import { CreateOptions } from './create';
 
 const trim = (str: string): string => str.trim();
 
-const getKebabCase = (str: string): string =>
-  trim(str).replace(/ /g, '-');
+const getKebabCase = (str: string): string => trim(str).replace(/ /g, '-');
 
 const questions: Question[] = [
   {
@@ -51,11 +50,10 @@ const questions: Question[] = [
 (async function runPrompt() {
   console.log(
     'Welcome to create-tba-game. This program will ' +
-    'create the basic setup required to start working ' +
-    'on your very own Text-Based Adventure game!\n' +
-
-    'You will be asked a few questions about your ' +
-    'desired game.\n'
+      'create the basic setup required to start working ' +
+      'on your very own Text-Based Adventure game!\n' +
+      'You will be asked a few questions about your ' +
+      'desired game.\n'
   );
 
   const { title, about, dirName }: Answers = await inquirer.prompt(questions);

@@ -28,9 +28,7 @@
     "pretty:create": "prettier --write \"create-tba-game/**/*.ts\""
   },
   "devDependencies": {
-    "@types/inquirer": "6.0.1",
     "@types/jest": "24.0.11",
-    "@types/node": "11.13.6",
     "@typescript-eslint/eslint-plugin": "1.7.0",
     "@typescript-eslint/parser": "1.7.0",
     "eslint": "5.16.0",
@@ -43,8 +41,12 @@
     "ts-node": "8.1.0"
   },
   "dependencies": {
-    "inquirer": "^6.3.1",
-    "toml": "^3.0.0",
+    "@types/inquirer": "6.0.1",
+    "@types/lodash.defaultsdeep": "4.6.6",
+    "@types/node": "11.13.6",
+    "inquirer": "6.3.1",
+    "lodash.defaultsdeep": "4.6.0",
+    "toml": "3.0.0",
     "typescript": "3.4.4"
   }
 }
