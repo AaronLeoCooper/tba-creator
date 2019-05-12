@@ -1,5 +1,7 @@
-import { DictionarySchema } from '../types/DictionarySchema';
-import { StorySchema } from '../types/StorySchema';
+import { SchemaType } from 'types/Schema';
+import { MainSchema } from 'types/MainSchema';
+import { DictionarySchema } from 'types/DictionarySchema';
+import { StorySchema } from 'types/StorySchema';
 
 import setSchemaDefaults, {
   dictionaryDefaults,
@@ -10,7 +12,7 @@ import setSchemaDefaults, {
 describe('setSchemaDefaults', () => {
   describe('main schema', () => {
     it('Should return the default main schema when an empty object is passed', () => {
-      const result = setSchemaDefaults('main', {});
+      const result: MainSchema = setSchemaDefaults(SchemaType.main, {});
 
       expect(result).toEqual(mainDefaults);
     });
@@ -25,7 +27,7 @@ describe('setSchemaDefaults', () => {
         }
       };
 
-      const result = setSchemaDefaults('main', partialSchema);
+      const result: MainSchema = setSchemaDefaults(SchemaType.main, partialSchema);
 
       expect(result).toEqual({
         description: {
@@ -45,7 +47,7 @@ describe('setSchemaDefaults', () => {
 
   describe('dictionary schema', () => {
     it('Should return the default dictionary schema when an empty object is passed', () => {
-      const result = setSchemaDefaults('dictionary', {});
+      const result: DictionarySchema = setSchemaDefaults(SchemaType.dictionary, {});
 
       expect(result).toEqual(dictionaryDefaults);
     });
@@ -55,7 +57,7 @@ describe('setSchemaDefaults', () => {
         phrases: [{ name: 'name1', aka: ['aka1'] }, { name: 'name2', aka: ['aka2'] }]
       };
 
-      const result = setSchemaDefaults('dictionary', partialSchema);
+      const result: DictionarySchema = setSchemaDefaults(SchemaType.dictionary, partialSchema);
 
       expect(result).toEqual({
         ...dictionaryDefaults,
@@ -66,7 +68,7 @@ describe('setSchemaDefaults', () => {
 
   describe('story schema', () => {
     it('Should return the default story schema when an empty object is passed', () => {
-      const result = setSchemaDefaults('story', {});
+      const result: StorySchema = setSchemaDefaults(SchemaType.story, {});
 
       expect(result).toEqual(storyDefaults);
     });
@@ -82,7 +84,7 @@ describe('setSchemaDefaults', () => {
         ]
       };
 
-      const result = setSchemaDefaults('story', partialSchema);
+      const result: StorySchema = setSchemaDefaults(SchemaType.story, partialSchema);
 
       expect(result).toEqual({
         ...storyDefaults,

@@ -1,8 +1,11 @@
 import loadFile from 'io/loadFile';
 import parseToml from 'parsers/parseToml';
+import setSchemaDefaults from './setSchemaDefaults';
+
+import { SchemaType } from 'types/Schema';
+import { MainSchema } from 'types/MainSchema';
 
 import loadSchema from './loadSchema';
-import setSchemaDefaults from './setSchemaDefaults';
 
 jest.mock('io/loadFile');
 jest.mock('parsers/parseToml');
@@ -12,6 +15,7 @@ describe('loadSchema', () => {
 name = "My game"
 about = """
 My game description
+"""
 
 [options.input]
 caseSensitive = true
@@ -19,7 +23,7 @@ quitPhrases = [ "quit", "exit" ]
 
 [options.scene]
 postDelayMs: 50
-"""`;
+`;
 
   const mainSchemaJson = {
     description: {
@@ -42,10 +46,14 @@ postDelayMs: 50
   });
 
   it('Should pass the complete TOML file path to loadFile', () => {
-    loadSchema('dir/path', 'main');
+    loadSchema('dir/path', SchemaType.main);
 
     expect(loadFile).toHaveBeenCalledTimes(1);
-    expect(loadFile).toHaveBeenCalledWith(expect.stringContaining('dir/path/main.toml'));
+
+    // @ts-ignore
+    const filePath = loadFile.mock.calls[0][0].replace(new RegExp('\\\\', 'g'), '/');
+
+    expect(filePath).toEqual(expect.stringContaining('dir/path/main.toml'));
   });
 
   it('Should reject with an error when the specified schema file fails to load', async () => {
@@ -53,7 +61,7 @@ postDelayMs: 50
     loadFile.mockRejectedValueOnce(new Error('File load error'));
 
     try {
-      await loadSchema('dir/path', 'main');
+      await loadSchema('dir/path', SchemaType.main);
     } catch (err) {
       expect(err).toBeInstanceOf(Error);
       expect(err.message).toBe('File load error');
@@ -67,7 +75,7 @@ postDelayMs: 50
     parseToml.mockRejectedValueOnce(new Error('TOML parse error'));
 
     try {
-      await loadSchema('dir/path', 'main');
+      await loadSchema('dir/path', SchemaType.main);
     } catch (err) {
       expect(err).toBeInstanceOf(Error);
       expect(err.message).toBe('TOML parse error');
@@ -80,8 +88,8 @@ postDelayMs: 50
     // @ts-ignore
     parseToml.mockResolvedValueOnce(mainSchemaJson);
 
-    const expectedSchema = setSchemaDefaults('main', mainSchemaJson);
+    const expectedSchema: MainSchema = setSchemaDefaults(SchemaType.main, mainSchemaJson);
 
-    await expect(loadSchema('dir/path', 'main')).resolves.toEqual(expectedSchema);
+    await expect(loadSchema('dir/path', SchemaType.main)).resolves.toEqual(expectedSchema);
   });
 });

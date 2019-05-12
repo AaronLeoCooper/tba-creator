@@ -35,8 +35,10 @@ const schemaDefaults = {
  * @param partialSchema {object}
  * @returns {Schema}
  */
-export default function setSchemaDefaults(schemaType: SchemaType, partialSchema: object): Schema {
+function setSchemaDefaults<T extends SchemaType>(schemaType: T, partialSchema: object): Schema<T> {
   const schemaDefault = schemaDefaults[schemaType];
 
   return defaultsDeep(partialSchema, schemaDefault);
 }
+
+export default setSchemaDefaults;
