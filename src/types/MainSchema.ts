@@ -1,20 +1,20 @@
-export interface SceneOptions {
+interface SceneOptions {
   preDelayMs: number;
   postDelayMs: number;
 }
 
-export interface InputOptions {
+interface InputOptions {
   caseSensitive: boolean;
   quitPhrases: string[];
   unknownPhraseWarnings: string[];
 }
 
-export interface Options {
+interface Options {
   scene: SceneOptions;
   input: InputOptions;
 }
 
-export interface Description {
+interface Description {
   name: string;
   about: string;
 }

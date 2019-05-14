@@ -12,13 +12,13 @@
     "create-tba-game": "build/create-tba-game/index.js"
   },
   "scripts": {
-    "start": "ts-node --project \"tsconfig.json\" \"src/index.ts\"",
-    "start:create": "ts-node --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
+    "start": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.json\" \"src/index.ts\"",
+    "start:create": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
     "build": "run-s clean build:*",
     "build:src": "tsc -p \"tsconfig.json\"",
     "build:create": "tsc -p \"tsconfig.create.json\"",
     "clean": "rimraf \"./build\"",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "run-s lint:*",
     "lint:src": "eslint \"src/**/*.ts\"",
@@ -38,7 +38,8 @@
     "prettier": "1.17.0",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
-    "ts-node": "8.1.0"
+    "ts-node": "8.1.0",
+    "tsconfig-paths": "^3.8.0"
   },
   "dependencies": {
     "@types/inquirer": "6.0.1",

@@ -1,5 +1,5 @@
-import { SchemaType } from 'types/Schema';
 import { MainSchema } from 'types/MainSchema';
+import { SchemaType } from 'types/Schema';
 import { DictionarySchema } from 'types/DictionarySchema';
 import { StorySchema } from 'types/StorySchema';
 

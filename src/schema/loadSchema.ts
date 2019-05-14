@@ -1,13 +1,16 @@
 import { resolve } from 'path';
 
+import { Schema, SchemaType } from 'types/Schema';
+import { MainSchema } from 'types/MainSchema';
+import { DictionarySchema } from 'types/DictionarySchema';
+import { StorySchema } from 'types/StorySchema';
+
 import loadFile from 'io/loadFile';
 import parseToml from 'parsers/parseToml';
 import setSchemaDefaults from 'schema/setSchemaDefaults';
-import { UnreachableCaseError } from 'schema/errors';
-
-import { Schema, SchemaType } from 'types/Schema';
 import validateMainSchema from 'schema/validateMainSchema';
-import { MainSchema } from 'types/MainSchema';
+import validateDictionarySchema from 'schema/validateDictionarySchema';
+import validateStorySchema from 'schema/validateStorySchema';
 
 /**
  * Loads a single schema TOML file and resolves with a complete schema JSON object.
@@ -33,13 +36,12 @@ async function loadSchema<T extends SchemaType>(
       break;
 
     case SchemaType.dictionary:
+      validateDictionarySchema(schema as DictionarySchema);
       break;
 
     case SchemaType.story:
+      validateStorySchema(schema as StorySchema);
       break;
-
-    default:
-      throw new UnreachableCaseError(schemaType);
   }
 
   return schema;

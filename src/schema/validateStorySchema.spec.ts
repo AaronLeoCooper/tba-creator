@@ -1,10 +1,11 @@
-import { EmptyFieldError } from 'schema/errors';
 import { StorySchema } from 'types/StorySchema';
+
+import SchemaValidationError from './SchemaValidationError';
 
 import validateStorySchema from './validateStorySchema';
 
 describe('validateStorySchema', () => {
-  it('Should throw an EmptyFieldError when scenes is empty', () => {
+  it('Should throw an SchemaValidationError when scenes is empty', () => {
     try {
       const schema: StorySchema = {
         scenes: []
@@ -12,7 +13,7 @@ describe('validateStorySchema', () => {
 
       validateStorySchema(schema);
     } catch (err) {
-      expect(err).toBeInstanceOf(EmptyFieldError);
+      expect(err).toBeInstanceOf(SchemaValidationError);
       expect(err.message).toBe('story.toml has an empty "scenes"');
     }
   });

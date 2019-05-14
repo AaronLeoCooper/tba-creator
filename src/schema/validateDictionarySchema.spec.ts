@@ -1,15 +1,16 @@
-import { EmptySchemaError } from 'schema/errors';
 import { DictionarySchema } from 'types/DictionarySchema';
+
+import SchemaValidationError from './SchemaValidationError';
 
 import validateDictionarySchema from './validateDictionarySchema';
 
 describe('validateDictionarySchema', () => {
-  it('Should throw an EmptySchemaError when an empty object is passed', () => {
+  it('Should throw an SchemaValidationError when an empty object is passed', () => {
     try {
       validateDictionarySchema({});
     } catch (err) {
-      expect(err).toBeInstanceOf(EmptySchemaError);
-      expect(err.message).toBe('dictionary.toml must contain at least one phrase type');
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe('dictionary.toml must contain at least one "phrase type"');
     }
   });
 

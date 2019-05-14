@@ -1,4 +1,4 @@
-export interface DictionaryItem {
+interface DictionaryItem {
   name: string;
   aka: string[];
 }

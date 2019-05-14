@@ -1,9 +1,9 @@
-import defaultsDeep from 'lodash.defaultsdeep';
-
-import { Schema, SchemaType } from 'types/Schema';
 import { MainSchema } from 'types/MainSchema';
 import { DictionarySchema } from 'types/DictionarySchema';
 import { StorySchema } from 'types/StorySchema';
+import { SchemaType, Schema } from 'types/Schema';
+
+import defaultsDeep from 'lodash.defaultsdeep';
 
 export const mainDefaults: MainSchema = {
   description: { name: '', about: '' },

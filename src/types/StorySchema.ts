@@ -1,12 +1,12 @@
-export interface Response {
+interface InputResponse {
   grammar: string[];
   nextScene: string;
 }
 
-export interface Scene {
+interface Scene {
   name: string;
   description: string;
-  responses?: Response[];
+  responses?: InputResponse[];
   nextScene?: string;
   ending?: boolean;
 }

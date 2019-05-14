@@ -1,12 +1,12 @@
-import setSchemaDefaults from './setSchemaDefaults';
-import { MissingFieldError } from './errors';
+import { SchemaType } from 'types/Schema';
 
-import { SchemaType } from '../types/Schema';
+import setSchemaDefaults from './setSchemaDefaults';
+import SchemaValidationError from './SchemaValidationError';
 
 import validateMainSchema from './validateMainSchema';
 
 describe('validateMainSchema', () => {
-  it('Should reject with an MissingFieldError when a required field is empty', () => {
+  it('Should reject with an SchemaValidationError when a required field is empty', () => {
     const schema = setSchemaDefaults(SchemaType.main, {
       description: { name: '' }
     });
@@ -14,7 +14,7 @@ describe('validateMainSchema', () => {
     try {
       validateMainSchema(schema);
     } catch (err) {
-      expect(err).toBeInstanceOf(MissingFieldError);
+      expect(err).toBeInstanceOf(SchemaValidationError);
       expect(err.message).toBe('main.toml is missing "name" under [description]');
     }
   });
