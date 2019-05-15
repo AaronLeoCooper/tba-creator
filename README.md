@@ -23,11 +23,11 @@ npm i -g tba-creator
 npm i tba-creator
 ```
 
-Here's a simple usage example of the program that will start by loading the `main.toml`
-schema file inside a `schema` directory:
+Here's a simple usage example of the program that will start by loading
+schema files located inside a `schema` directory:
 
 ```bash
-tbac ./schema/main.toml
+tbac ./schema
 ```
 
 > Tip: `tbac` is an alias for the full program name `tba-creator`. You can use either.

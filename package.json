@@ -15,8 +15,8 @@
     "start": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.json\" \"src/index.ts\"",
     "start:create": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
     "build": "run-s clean build:*",
-    "build:src": "tsc -p \"tsconfig.json\"",
-    "build:create": "tsc -p \"tsconfig.create.json\"",
+    "build:src": "tsc -p \"tsconfig.json\" && tscpaths -p \"tsconfig.json\" -s \"src\" -o \"build/tba-creator\"",
+    "build:create": "tsc -p \"tsconfig.create.json\" && ncp \"create-tba-game/templates\" \"build/create-tba-game/templates\"",
     "clean": "rimraf \"./build\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
@@ -34,12 +34,14 @@
     "eslint": "5.16.0",
     "eslint-config-prettier": "4.1.0",
     "jest": "24.7.1",
+    "ncp": "2.0.0",
     "npm-run-all": "4.1.5",
     "prettier": "1.17.0",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
-    "tsconfig-paths": "3.8.0"
+    "tsconfig-paths": "3.8.0",
+    "tscpaths": "0.0.9"
   },
   "dependencies": {
     "@types/inquirer": "6.0.1",

@@ -2,7 +2,7 @@
   "name": "$title$",
   "version": "1.0.0",
   "scripts": {
-    "start": "tbac main.toml"
+    "start": "tbac"
   },
   "dependencies": {
     "tba-creator": "$version$"
