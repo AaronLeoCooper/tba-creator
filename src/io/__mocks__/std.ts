@@ -7,3 +7,9 @@ export const stdin = {
 export const stdout = {
   write: jest.fn()
 };
+
+export const stderr = {
+  write: jest.fn()
+};
+
+export const exit = jest.fn();

@@ -1,4 +1,4 @@
-import { stdin, stdout, stderr } from './std';
+import { stdin, stdout, stderr, exit } from './std';
 
 describe('std', () => {
   describe('stdin', () => {
@@ -16,6 +16,12 @@ describe('std', () => {
   describe('stderr', () => {
     it('Should be process.stderr', () => {
       expect(stderr).toEqual(process.stderr);
+    });
+  });
+
+  describe('exit', () => {
+    it('Should be process.exit', () => {
+      expect(exit).toEqual(process.exit);
     });
   });
 });

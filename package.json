@@ -39,12 +39,13 @@
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
-    "tsconfig-paths": "^3.8.0"
+    "tsconfig-paths": "3.8.0"
   },
   "dependencies": {
     "@types/inquirer": "6.0.1",
     "@types/lodash.defaultsdeep": "4.6.6",
     "@types/node": "11.13.6",
+    "chalk": "2.4.2",
     "inquirer": "6.3.1",
     "lodash.defaultsdeep": "4.6.0",
     "toml": "3.0.0",
