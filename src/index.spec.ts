@@ -3,6 +3,7 @@ import { SchemaType } from 'types/Schema';
 import { exit } from 'io/std';
 import loadSchema from 'schema/loadSchema';
 import SchemaValidationError, { SchemaValidationErrorType } from 'schema/SchemaValidationError';
+import FileMissingError from 'schema/FileMissingError';
 
 import start from './index';
 
@@ -38,6 +39,20 @@ describe('index', () => {
     loadSchema.mockRejectedValueOnce(
       new SchemaValidationError('main.toml', SchemaValidationErrorType.emptySchema, ['property'])
     );
+
+    const result = await start('test/dir');
+
+    expect(result).toBe(false);
+
+    expect(exit).toHaveBeenCalledTimes(1);
+    expect(exit).toHaveBeenCalledWith(1);
+  });
+
+  it('Should call print.err then exit with code 1 when loadSchema throws a FileMissingError', async () => {
+    expect.hasAssertions();
+
+    // @ts-ignore
+    loadSchema.mockRejectedValueOnce(new FileMissingError('main.toml'));
 
     const result = await start('test/dir');
 

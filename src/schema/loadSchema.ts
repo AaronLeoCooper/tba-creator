@@ -25,7 +25,7 @@ async function loadSchema<T extends SchemaType>(
   const fileName = `${schemaType}.toml`;
   const filePath = resolve(directoryPath, fileName);
 
-  const tomlStr = await loadFile(filePath);
+  const tomlStr = await loadFile(filePath, fileName);
   const userSchema = await parseToml(tomlStr);
 
   const schema = setSchemaDefaults(schemaType, userSchema);

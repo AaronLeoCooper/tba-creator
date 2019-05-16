@@ -1,5 +1,7 @@
 import { readFile } from 'fs';
 
+import FileMissingError from 'schema/FileMissingError';
+
 import loadFile from './loadFile';
 
 jest.mock('fs');
@@ -14,25 +16,25 @@ This is the third line`;
   });
 
   it('Should pass the file path to fs.readFile', () => {
-    loadFile('file/path');
+    loadFile('file/path', 'fileName');
 
     expect(readFile).toHaveBeenCalledTimes(1);
 
     // @ts-ignore
-    expect(readFile.mock.calls[0][0]).toBe('file/path');
+    expect(readFile.mock.calls[0][0].replace(/\\/g, '/')).toContain('file/path/fileName');
   });
 
-  it('Should reject with an error when file read operation fails', async () => {
+  it('Should reject with a FileMissingError when file read operation fails', async () => {
     // @ts-ignore
     readFile.mockImplementationOnce((path, encoding, cb) => cb(new Error('File read error')));
 
-    await expect(loadFile('file/path')).rejects.toBeInstanceOf(Error);
+    await expect(loadFile('file/path', 'fileName')).rejects.toBeInstanceOf(FileMissingError);
   });
 
   it('Should resolve with the expected file content string', async () => {
     // @ts-ignore
     readFile.mockImplementationOnce((path, encoding, cb) => cb(undefined, textContent));
 
-    await expect(loadFile('file/path')).resolves.toBe(textContent);
+    await expect(loadFile('file/path', 'fileName')).resolves.toBe(textContent);
   });
 });

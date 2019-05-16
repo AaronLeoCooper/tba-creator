@@ -1,19 +1,23 @@
 import { readFile } from 'fs';
+import { resolve as resolvePath } from 'path';
+
+import FileMissingError from 'schema/FileMissingError';
 
 /**
  * Load a single file at the given path and return its content as a string.
  * @param filePath {string}
+ * @param fileName {string}
  * @returns {Promise<string>}
  */
-export default function loadFile(filePath: string): Promise<string> {
+export default function loadFile(filePath: string, fileName: string): Promise<string> {
   return new Promise(
     (resolve, reject): void => {
       readFile(
-        filePath,
+        resolvePath(filePath, fileName),
         'utf8',
         (err, data: string): void => {
           if (err) {
-            reject(err);
+            reject(new FileMissingError(fileName));
           }
 
           resolve(data);
