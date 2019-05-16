@@ -5,48 +5,49 @@ import * as print from 'io/print';
 import { exit } from 'io/std';
 import loadAllSchema from 'schema/loadAllSchema';
 
-const args = yargs
-  .options({
-    n: {
-      alias: 'no-validate',
-      describe: 'Skip validation when running the TBA',
-      type: 'boolean'
-    },
-    o: {
-      alias: 'only-validate',
-      describe: 'Only validate schema files without running the TBA',
-      type: 'boolean'
-    }
-  })
-  .conflicts('n', 'o').argv;
+const args = yargs.options({
+  o: {
+    alias: 'only-validate',
+    describe: 'Only validate schema files without running the TBA',
+    type: 'boolean'
+  }
+}).argv;
 
 const [userSchemaDir = './'] = args._;
 
 const schemaDir = resolve(process.cwd(), userSchemaDir);
 
-export default async function main(schemaDir: string): Promise<boolean> {
+interface MainOptions {
+  onlyValidate?: boolean;
+}
+
+/**
+ * Initialises the main TBA program.
+ * @param schemaDir {string}
+ * @param options {MainOptions}
+ * @returns {Promise<boolean>}
+ */
+export default async function main(schemaDir: string, options: MainOptions = {}): Promise<boolean> {
+  const { onlyValidate } = options;
+
   try {
     const schemaMap = await loadAllSchema(schemaDir);
 
-    if (args.onlyValidate) {
-      exit(0);
+    if (onlyValidate) {
+      print.msg('All required schema files are present and valid');
 
-      return true;
+      return exit(0);
     }
 
-    exit(0);
-
-    return true;
+    return exit(0);
   } catch (err) {
     print.err(err.message);
 
-    exit(1);
-
-    return false;
+    return exit(1);
   }
 }
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
-  main(schemaDir);
+  main(schemaDir, args as MainOptions);
 }

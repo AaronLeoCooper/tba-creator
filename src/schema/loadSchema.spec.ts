@@ -78,9 +78,7 @@ aka = ["walk", "run"]
     expect(loadFile).toHaveBeenCalledTimes(1);
 
     // @ts-ignore
-    const filePath = loadFile.mock.calls[0][0].replace(new RegExp('\\\\', 'g'), '/');
-
-    expect(filePath).toEqual(expect.stringContaining('dir/path/main.toml'));
+    expect(loadFile.mock.calls[0][0]).toBe('dir/path');
   });
 
   it('Should reject with an error when the specified schema file fails to load', async () => {

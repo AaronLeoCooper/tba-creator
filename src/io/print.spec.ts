@@ -13,7 +13,7 @@ describe('print', () => {
 
   describe('msg', () => {
     it('Should print normal text via console.log', () => {
-      jest.spyOn(console, 'log');
+      jest.spyOn(console, 'log').mockImplementationOnce(() => {});
 
       msg('Test text');
 
@@ -23,7 +23,7 @@ describe('print', () => {
 
   describe('err', () => {
     it('Should print red text via console.error', () => {
-      jest.spyOn(console, 'error');
+      jest.spyOn(console, 'error').mockImplementationOnce(() => {});
 
       err('Error text');
 

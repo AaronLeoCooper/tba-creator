@@ -14,18 +14,17 @@ import validateStorySchema from 'schema/validateStorySchema';
 
 /**
  * Loads a single schema TOML file and resolves with a complete schema JSON object.
- * @param directoryPath {string}
+ * @param schemaDir {string}
  * @param schemaType {SchemaType}
  * @returns {Promise<Schema>}
  */
 async function loadSchema<T extends SchemaType>(
-  directoryPath: string,
+  schemaDir: string,
   schemaType: T
 ): Promise<Schema<T>> {
   const fileName = `${schemaType}.toml`;
-  const filePath = resolve(directoryPath, fileName);
 
-  const tomlStr = await loadFile(filePath, fileName);
+  const tomlStr = await loadFile(schemaDir, fileName);
   const userSchema = await parseToml(tomlStr);
 
   const schema = setSchemaDefaults(schemaType, userSchema);

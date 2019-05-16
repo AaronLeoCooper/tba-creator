@@ -18,6 +18,7 @@
     "build:src": "tsc -p \"tsconfig.json\" && tscpaths -p \"tsconfig.json\" -s \"src\" -o \"build/tba-creator\"",
     "build:create": "tsc -p \"tsconfig.create.json\" && ncp \"create-tba-game/templates\" \"build/create-tba-game/templates\"",
     "clean": "rimraf \"./build\"",
+    "validate": "run-s lint test build",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "run-s lint:*",
