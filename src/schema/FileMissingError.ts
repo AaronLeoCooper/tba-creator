@@ -7,4 +7,3 @@ export default class FileMissingError extends Error {
     this.fileName = fileName;
   }
 }
-

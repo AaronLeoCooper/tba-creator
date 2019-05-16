@@ -126,7 +126,10 @@ aka = ["walk", "run"]
     // @ts-ignore
     parseToml.mockResolvedValueOnce(dictionarySchemaJson);
 
-    const expectedSchema: DictionarySchema = setSchemaDefaults(SchemaType.dictionary, dictionarySchemaJson);
+    const expectedSchema: DictionarySchema = setSchemaDefaults(
+      SchemaType.dictionary,
+      dictionarySchemaJson
+    );
 
     await expect(loadSchema('dir/path', SchemaType.dictionary)).resolves.toEqual(expectedSchema);
   });

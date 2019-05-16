@@ -20,8 +20,32 @@ describe('std', () => {
   });
 
   describe('exit', () => {
-    it('Should be process.exit', () => {
-      expect(exit).toEqual(process.exit);
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('Should call process.exit(0) & return true when nothing is passed', () => {
+      // @ts-ignore
+      jest.spyOn(process, 'exit').mockImplementationOnce(() => {});
+
+      const result = exit();
+
+      expect(process.exit).toHaveBeenCalledTimes(1);
+      expect(process.exit).toHaveBeenCalledWith(0);
+
+      expect(result).toBe(true);
+    });
+
+    it('Should call process.exit(1) & return false when 1 passed', () => {
+      // @ts-ignore
+      jest.spyOn(process, 'exit').mockImplementationOnce(() => {});
+
+      const result = exit(1);
+
+      expect(process.exit).toHaveBeenCalledTimes(1);
+      expect(process.exit).toHaveBeenCalledWith(1);
+
+      expect(result).toBe(false);
     });
   });
 });

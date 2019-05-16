@@ -2,10 +2,8 @@ import { SchemaType } from 'types/Schema';
 
 import { exit } from 'io/std';
 import loadSchema from 'schema/loadSchema';
-import SchemaValidationError, { SchemaValidationErrorType } from 'schema/SchemaValidationError';
-import FileMissingError from 'schema/FileMissingError';
 
-import start from './index';
+import main from './index';
 
 jest.mock('io/std');
 jest.mock('io/print');
@@ -19,7 +17,7 @@ describe('index', () => {
   it('Should call loadSchema once for each schema file then exit with code 0', async () => {
     expect.hasAssertions();
 
-    const result = await start('test/dir');
+    const result = await main('test/dir');
 
     expect(result).toBe(true);
 
@@ -32,43 +30,13 @@ describe('index', () => {
     expect(exit).toHaveBeenCalledWith(0);
   });
 
-  it('Should call print.err then exit with code 1 when loadSchema throws a SchemaValidationError', async () => {
-    expect.hasAssertions();
-
-    // @ts-ignore
-    loadSchema.mockRejectedValueOnce(
-      new SchemaValidationError('main.toml', SchemaValidationErrorType.emptySchema, ['property'])
-    );
-
-    const result = await start('test/dir');
-
-    expect(result).toBe(false);
-
-    expect(exit).toHaveBeenCalledTimes(1);
-    expect(exit).toHaveBeenCalledWith(1);
-  });
-
-  it('Should call print.err then exit with code 1 when loadSchema throws a FileMissingError', async () => {
-    expect.hasAssertions();
-
-    // @ts-ignore
-    loadSchema.mockRejectedValueOnce(new FileMissingError('main.toml'));
-
-    const result = await start('test/dir');
-
-    expect(result).toBe(false);
-
-    expect(exit).toHaveBeenCalledTimes(1);
-    expect(exit).toHaveBeenCalledWith(1);
-  });
-
-  it('Should call print.err then exit with code 1 when loadSchema throws a generic error', async () => {
+  it('Should call print.err then exit with code 1 when loadSchema throws an error', async () => {
     expect.hasAssertions();
 
     // @ts-ignore
     loadSchema.mockRejectedValueOnce(new Error('Test error'));
 
-    const result = await start('test/dir');
+    const result = await main('test/dir');
 
     expect(result).toBe(false);
 
