@@ -2,13 +2,20 @@
   "extends": "./tsconfig/tsconfig.base",
   "compilerOptions": {
     "outDir": "./build/tba-creator",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "io/*": ["io/*"],
+      "schema/*": ["schema/*"],
+      "parsers/*": ["parsers/*"],
+      "types/*": ["types/*"]
+    }
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/__mocks__"
   ]
 }
