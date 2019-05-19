@@ -1,0 +1,69 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Linters
+          command: yarn lint
+      - run:
+          name: Unit tests
+          command: yarn test --ci --runInBand
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
+      - run:
+          name: Build
+          command: yarn build
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+#  deploy:
+#    <<: *defaults
+#    steps:
+#      - attach_workspace:
+#          at: ~/repo
+#      - run:
+#          name: Authenticate with registry
+#          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+#      - run:
+#          name: Publish package
+#          command: npm publish
+
+workflows:
+  version: 2.1
+  build-deployment:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+#      - deploy:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /^v.*/

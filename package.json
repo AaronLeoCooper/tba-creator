@@ -12,13 +12,14 @@
     "create-tba-game": "build/create-tba-game/index.js"
   },
   "scripts": {
-    "start": "ts-node --project \"tsconfig.json\" \"src/index.ts\"",
-    "start:create": "ts-node --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
+    "start": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.json\" \"src/index.ts\"",
+    "start:create": "ts-node -r \"tsconfig-paths/register\" --project \"tsconfig.create.json\" \"create-tba-game/index.ts\"",
     "build": "run-s clean build:*",
-    "build:src": "tsc -p \"tsconfig.json\"",
-    "build:create": "tsc -p \"tsconfig.create.json\"",
+    "build:src": "tsc -p \"tsconfig.json\" && tscpaths -p \"tsconfig.json\" -s \"src\" -o \"build/tba-creator\"",
+    "build:create": "tsc -p \"tsconfig.create.json\" && ncp \"create-tba-game/templates\" \"build/create-tba-game/templates\"",
     "clean": "rimraf \"./build\"",
-    "test": "jest",
+    "validate": "run-s lint test build",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "run-s lint:*",
     "lint:src": "eslint \"src/**/*.ts\"",
@@ -28,23 +29,30 @@
     "pretty:create": "prettier --write \"create-tba-game/**/*.ts\""
   },
   "devDependencies": {
-    "@types/inquirer": "6.0.1",
     "@types/jest": "24.0.11",
-    "@types/node": "11.13.6",
     "@typescript-eslint/eslint-plugin": "1.7.0",
     "@typescript-eslint/parser": "1.7.0",
     "eslint": "5.16.0",
     "eslint-config-prettier": "4.1.0",
     "jest": "24.7.1",
+    "ncp": "2.0.0",
     "npm-run-all": "4.1.5",
     "prettier": "1.17.0",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
-    "ts-node": "8.1.0"
+    "ts-node": "8.1.0",
+    "tsconfig-paths": "3.8.0",
+    "tscpaths": "0.0.9"
   },
   "dependencies": {
-    "inquirer": "^6.3.1",
-    "toml": "^3.0.0",
-    "typescript": "3.4.4"
+    "@types/inquirer": "6.0.1",
+    "@types/lodash.defaultsdeep": "4.6.6",
+    "@types/node": "11.13.6",
+    "chalk": "2.4.2",
+    "inquirer": "6.3.1",
+    "lodash.defaultsdeep": "4.6.0",
+    "toml": "3.0.0",
+    "typescript": "3.4.4",
+    "yargs": "13.2.4"
   }
 }
