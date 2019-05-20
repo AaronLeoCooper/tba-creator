@@ -3,7 +3,7 @@ interface InputResponse {
   nextScene: string;
 }
 
-interface Scene {
+export interface Scene {
   name: string;
   description: string;
   responses?: InputResponse[];

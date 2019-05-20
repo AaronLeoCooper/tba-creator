@@ -10,22 +10,20 @@ export const mainSchema: MainSchema = {
   },
   options: {
     input: {
-      caseSensitive: true,
+      caseSensitive: false,
       quitPhrases: ['quit', 'exit'],
-      unknownPhraseWarnings: ['Unknown phrase warning']
+      unknownPhraseWarnings: ['Unknown phrase 1', 'Unknown phrase 2', 'Unknown phrase 3']
     },
     scene: {
       preDelayMs: 0,
-      postDelayMs: 50
+      postDelayMs: 0
     }
   }
 };
 
 export const dictionarySchema: DictionarySchema = {
-  actions: [
-    { name: 'walk', aka: ['walk', 'run'] },
-    { name: 'hop', aka: ['hop'] }
-  ]
+  actions: [{ name: 'open', aka: ['grab'] }],
+  objects: [{ name: 'red door', aka: ['door'] }, { name: 'blue door', aka: ['door'] }]
 };
 
 export const storySchema: StorySchema = {
@@ -33,11 +31,24 @@ export const storySchema: StorySchema = {
     {
       name: 'scene1',
       description: 'First scene',
-      responses: [{ grammar: ['actions.walk'], nextScene: 'scene2' }]
+      responses: [
+        { grammar: ['actions.open', 'objects.blue door'], nextScene: 'scene2a' },
+        { grammar: ['actions.grab', 'objects.red door'], nextScene: 'scene2b' }
+      ]
     },
     {
-      name: 'scene2',
-      description: 'Second scene',
+      name: 'scene2a',
+      description: 'Second scene A',
+      nextScene: 'scene3'
+    },
+    {
+      name: 'scene2b',
+      description: 'Second scene B',
+      ending: true
+    },
+    {
+      name: 'scene3',
+      description: 'Third scene',
       ending: true
     }
   ]
