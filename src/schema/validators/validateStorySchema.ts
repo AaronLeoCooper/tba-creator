@@ -1,6 +1,6 @@
 import { StorySchema } from 'types/StorySchema';
 
-import SchemaValidationError, { SchemaValidationErrorType } from 'schema/SchemaValidationError';
+import SchemaValidationError, { SchemaValidationErrorType } from 'schema/errors/SchemaValidationError';
 
 const fileName = 'story.toml';
 

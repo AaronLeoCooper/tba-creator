@@ -4,6 +4,7 @@ import yargs from 'yargs';
 import * as print from 'io/print';
 import { exit } from 'io/std';
 import loadAllSchema from 'schema/loadAllSchema';
+import validateAllSchema from 'schema/validateAllSchema';
 
 const args = yargs.options({
   o: {
@@ -32,6 +33,7 @@ export default async function main(schemaDir: string, options: MainOptions = {})
 
   try {
     const schemaMap = await loadAllSchema(schemaDir);
+    const allSchemaValid = validateAllSchema(schemaMap);
 
     if (onlyValidate) {
       print.msg('All required schema files are present and valid');

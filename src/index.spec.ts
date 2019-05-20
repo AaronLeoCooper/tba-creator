@@ -2,20 +2,28 @@ import { SchemaType } from 'types/Schema';
 
 import { exit } from 'io/std';
 import * as print from 'io/print';
-import loadSchema from 'schema/loadSchema';
+import loadAllSchema from 'schema/loadAllSchema';
+import validateAllSchema from 'schema/validateAllSchema';
 
 import main from './index';
 
 jest.mock('io/std');
 jest.mock('io/print');
-jest.mock('schema/loadSchema', () => jest.fn().mockResolvedValue({}));
+jest.mock('schema/loadAllSchema', () =>
+  jest.fn().mockResolvedValue({
+    mainSchema: {},
+    dictionarySchema: {},
+    storySchema: {}
+  })
+);
+jest.mock('schema/validateAllSchema', () => jest.fn().mockReturnValue(true));
 
 describe('index', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('Should call loadSchema once for each schema file then exit with code 0', async () => {
+  it('Should call loadAllSchema and validateAllSchema then exit with code 0 when there are no errors', async () => {
     expect.hasAssertions();
 
     // @ts-ignore
@@ -25,13 +33,20 @@ describe('index', () => {
 
     expect(result).toBe(true);
 
-    expect(loadSchema).toHaveBeenCalledTimes(3);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.main);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.dictionary);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.story);
+    expect(loadAllSchema).toHaveBeenCalledTimes(1);
+    expect(loadAllSchema).toHaveBeenCalledWith('test/dir');
+
+    expect(validateAllSchema).toHaveBeenCalledTimes(1);
+    expect(validateAllSchema).toHaveBeenCalledWith({
+      mainSchema: {},
+      dictionarySchema: {},
+      storySchema: {}
+    });
 
     expect(exit).toHaveBeenCalledTimes(1);
     expect(exit).toHaveBeenCalledWith(0);
+
+    expect(print.msg).not.toHaveBeenCalled();
   });
 
   it('Should print a message & exit code 0 when running only validation stage', async () => {
@@ -44,10 +59,15 @@ describe('index', () => {
 
     expect(result).toBe(true);
 
-    expect(loadSchema).toHaveBeenCalledTimes(3);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.main);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.dictionary);
-    expect(loadSchema).toHaveBeenCalledWith('test/dir', SchemaType.story);
+    expect(loadAllSchema).toHaveBeenCalledTimes(1);
+    expect(loadAllSchema).toHaveBeenCalledWith('test/dir');
+
+    expect(validateAllSchema).toHaveBeenCalledTimes(1);
+    expect(validateAllSchema).toHaveBeenCalledWith({
+      mainSchema: {},
+      dictionarySchema: {},
+      storySchema: {}
+    });
 
     expect(print.msg).toHaveBeenCalledTimes(1);
     expect(print.msg).toHaveBeenCalledWith('All required schema files are present and valid');
@@ -63,11 +83,14 @@ describe('index', () => {
     exit.mockReturnValueOnce(false);
 
     // @ts-ignore
-    loadSchema.mockRejectedValueOnce(new Error('Test error'));
+    loadAllSchema.mockRejectedValueOnce(new Error('Test error'));
 
     const result = await main('test/dir');
 
     expect(result).toBe(false);
+
+    expect(print.err).toHaveBeenCalledTimes(1);
+    expect(print.err).toHaveBeenCalledWith('Test error');
 
     expect(exit).toHaveBeenCalledTimes(1);
     expect(exit).toHaveBeenCalledWith(1);

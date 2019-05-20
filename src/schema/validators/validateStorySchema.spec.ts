@@ -1,6 +1,6 @@
-import { StorySchema } from 'types/StorySchema';
+import { StorySchema } from '../../types/StorySchema';
 
-import SchemaValidationError from './SchemaValidationError';
+import SchemaValidationError from '../errors/SchemaValidationError';
 
 import validateStorySchema from './validateStorySchema';
 

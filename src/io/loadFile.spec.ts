@@ -1,6 +1,6 @@
 import { readFile } from 'fs';
 
-import FileMissingError from 'schema/FileMissingError';
+import FileMissingError from 'schema/errors/FileMissingError';
 
 import loadFile from './loadFile';
 

@@ -1,73 +1,25 @@
-import loadFile from 'io/loadFile';
-import parseToml from 'parsers/parseToml';
-import setSchemaDefaults from './setSchemaDefaults';
-
 import { SchemaType } from 'types/Schema';
 import { MainSchema } from 'types/MainSchema';
+import { DictionarySchema } from 'types/DictionarySchema';
+import { StorySchema } from 'types/StorySchema';
+
+import loadFile from 'io/loadFile';
+import parseToml from 'schema/parsers/parseToml';
+import setSchemaDefaults from './setSchemaDefaults';
+
+import {
+  partialDictionarySchemaJson,
+  partialDictionarySchemaToml,
+  partialMainSchemaJson,
+  partialMainSchemaToml, partialStorySchemaJson, partialStorySchemaToml
+} from '../__mocks__/mockSchema';
 
 import loadSchema from './loadSchema';
-import { DictionarySchema } from '../types/DictionarySchema';
-import { StorySchema } from '../types/StorySchema';
 
 jest.mock('io/loadFile');
-jest.mock('parsers/parseToml');
+jest.mock('schema/parsers/parseToml');
 
 describe('loadSchema', () => {
-  const mainSchemaToml = `[description]
-name = "My game"
-about = """
-My game description
-"""
-
-[options.input]
-caseSensitive = true
-quitPhrases = [ "quit", "exit" ]
-
-[options.scene]
-postDelayMs: 50
-`;
-
-  const dictionarySchemaToml = `[[phrases]]
-name = "walk"
-aka = ["walk", "run"]
-`;
-
-  const storySchemaToml = `[[scenes]]
-  name = "scene"
-  description = "Test scene"
-  ending = true
-`;
-
-  const mainSchemaJson = {
-    description: {
-      name: 'My game',
-      about: 'My game description'
-    },
-    options: {
-      input: {
-        caseSensitive: true,
-        quitPhrases: ['quit', 'exit']
-      },
-      scene: {
-        postDelayMs: 50
-      }
-    }
-  };
-
-  const dictionarySchemaJson = {
-    phrases: [{ name: 'walk', aka: ['walk', 'run'] }]
-  };
-
-  const storySchemaJson = {
-    scenes: [
-      {
-        name: 'scene',
-        description: 'Test scene',
-        ending: true
-      }
-    ]
-  };
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -95,7 +47,7 @@ aka = ["walk", "run"]
 
   it('Should reject with an error when the TOML file schema fails to be parsed', async () => {
     // @ts-ignore
-    loadFile.mockResolvedValueOnce(mainSchemaToml);
+    loadFile.mockResolvedValueOnce(partialMainSchemaToml);
     // @ts-ignore
     parseToml.mockRejectedValueOnce(new Error('TOML parse error'));
 
@@ -109,24 +61,24 @@ aka = ["walk", "run"]
 
   it('Should resolve with a complete main schema from the TOML file and defaults', async () => {
     // @ts-ignore
-    loadFile.mockResolvedValueOnce(mainSchemaToml);
+    loadFile.mockResolvedValueOnce(partialMainSchemaToml);
     // @ts-ignore
-    parseToml.mockResolvedValueOnce(mainSchemaJson);
+    parseToml.mockResolvedValueOnce(partialMainSchemaJson);
 
-    const expectedSchema: MainSchema = setSchemaDefaults(SchemaType.main, mainSchemaJson);
+    const expectedSchema: MainSchema = setSchemaDefaults(SchemaType.main, partialMainSchemaJson);
 
     await expect(loadSchema('dir/path', SchemaType.main)).resolves.toEqual(expectedSchema);
   });
 
   it('Should resolve with a complete dictionary schema from the TOML file and defaults', async () => {
     // @ts-ignore
-    loadFile.mockResolvedValueOnce(dictionarySchemaToml);
+    loadFile.mockResolvedValueOnce(partialDictionarySchemaToml);
     // @ts-ignore
-    parseToml.mockResolvedValueOnce(dictionarySchemaJson);
+    parseToml.mockResolvedValueOnce(partialDictionarySchemaJson);
 
     const expectedSchema: DictionarySchema = setSchemaDefaults(
       SchemaType.dictionary,
-      dictionarySchemaJson
+      partialDictionarySchemaJson
     );
 
     await expect(loadSchema('dir/path', SchemaType.dictionary)).resolves.toEqual(expectedSchema);
@@ -134,11 +86,11 @@ aka = ["walk", "run"]
 
   it('Should resolve with a complete story schema from the TOML file and defaults', async () => {
     // @ts-ignore
-    loadFile.mockResolvedValueOnce(storySchemaToml);
+    loadFile.mockResolvedValueOnce(partialStorySchemaToml);
     // @ts-ignore
-    parseToml.mockResolvedValueOnce(storySchemaJson);
+    parseToml.mockResolvedValueOnce(partialStorySchemaJson);
 
-    const expectedSchema: StorySchema = setSchemaDefaults(SchemaType.story, storySchemaJson);
+    const expectedSchema: StorySchema = setSchemaDefaults(SchemaType.story, partialStorySchemaJson);
 
     await expect(loadSchema('dir/path', SchemaType.story)).resolves.toEqual(expectedSchema);
   });

@@ -6,7 +6,7 @@
     "paths": {
       "io/*": ["io/*"],
       "schema/*": ["schema/*"],
-      "parsers/*": ["parsers/*"],
+      "story/*": ["story/*"],
       "types/*": ["types/*"]
     }
   },
