@@ -23,7 +23,7 @@ export const mainSchema: MainSchema = {
 
 export const dictionarySchema: DictionarySchema = {
   actions: [{ name: 'open', aka: ['grab'] }],
-  objects: [{ name: 'red door', aka: ['door'] }, { name: 'blue door', aka: ['door'] }]
+  objects: [{ name: 'red door' }, { name: 'blue door', aka: ['door'] }]
 };
 
 export const storySchema: StorySchema = {
@@ -33,7 +33,7 @@ export const storySchema: StorySchema = {
       description: 'First scene',
       responses: [
         { grammar: ['actions.open', 'objects.blue door'], description: 'Response 1 description' },
-        { grammar: ['actions.grab', 'objects.red door'], nextScene: 'scene2' }
+        { grammar: ['actions.open', 'objects.red door'], nextScene: 'scene2' }
       ]
     },
     {

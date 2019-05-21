@@ -1,4 +1,4 @@
-interface InputResponse {
+export interface InputResponse {
   grammar: string[];
   nextScene?: string;
   description?: string;

@@ -22,4 +22,25 @@ describe('getStateDescriptor', () => {
       });
     });
   });
+
+  describe('Matching response', () => {
+    it('Should return a descriptor with the matching response scene', () => {
+      const result = getStateDescriptor(schemaMap, storySchema.scenes[0], 'open the red door');
+
+      expect(result).toEqual({
+        running: true,
+        scene: storySchema.scenes[1]
+      });
+    });
+
+    it('Should return a descriptor with the matching response description', () => {
+      const result = getStateDescriptor(schemaMap, storySchema.scenes[0], 'open the blue door');
+
+      expect(result).toEqual({
+        running: true,
+        scene: storySchema.scenes[0],
+        description: 'Response 1 description'
+      });
+    });
+  });
 });

@@ -1,35 +1,54 @@
-import { Scene } from 'types/StorySchema';
 import { SchemaMap } from 'types/Schema';
-import { InputOptions } from 'types/MainSchema';
+import { InputResponse, Scene } from 'types/StorySchema';
+import { DictionarySchema } from 'types/DictionarySchema';
+import { StateDescriptor } from 'types/Story';
 
-interface StateDescriptor {
-  running: boolean;
-  scene: Scene;
-}
-
-/**
- * Returns true if the user input string matches one of the main
- * input options quit phrases.
- * @param options {InputOptions}
- * @param userInput {string=}
- */
-function isQuitPhrase(options: InputOptions, userInput?: string): boolean {
-  return options.quitPhrases.includes(String(userInput));
-}
+import isQuitPhrase from 'story/matchers/isQuitPhrase';
+import isMatchingResponse from 'story/matchers/isMatchingResponse';
 
 /**
- * Returns the next scene found
- * @param schemaMap {SchemaMap}
+ * Returns a matching response from the
+ * @param dictionarySchema {DictionarySchema}
  * @param currentScene {Scene}
  * @param userInput {string=}
- * @returns {StateDescriptor}
+ * @returns {InputResponse}
  */
-function getNextScene(
-  schemaMap: SchemaMap,
+function getMatchingResponse(
+  dictionarySchema: DictionarySchema,
   currentScene: Scene,
   userInput?: string
-): Scene {
-  return currentScene;
+): InputResponse | void {
+  const { responses = [] } = currentScene;
+
+  if (!userInput) {
+    return;
+  }
+
+  return responses.find(
+    ({ grammar }): boolean => isMatchingResponse(dictionarySchema, grammar, userInput)
+  );
+}
+
+/**
+ * Returns the next scene object, or the current scene, based on the
+ * passed input response object.
+ * @param scenes {Scene[]}
+ * @param currentScene {Scene}
+ * @param inputResponse {InputResponse}
+ * @returns {Scene}
+ */
+function getNextScene(scenes: Scene[], currentScene: Scene, inputResponse: InputResponse): Scene {
+  if (!inputResponse.nextScene) {
+    return currentScene;
+  }
+
+  const nextScene = scenes.find(
+    (scene): boolean => {
+      return scene.name === inputResponse.nextScene;
+    }
+  );
+
+  return nextScene || currentScene;
 }
 
 /**
@@ -44,19 +63,29 @@ export default function getStateDescriptor(
   currentScene: Scene,
   userInput?: string
 ): StateDescriptor {
-  const { mainSchema } = schemaMap;
+  const { mainSchema, dictionarySchema, storySchema } = schemaMap;
 
-  if (isQuitPhrase(mainSchema.options.input, userInput)) {
+  const defaultStateDescriptor = {
+    running: true,
+    scene: currentScene
+  };
+
+  if (isQuitPhrase(mainSchema.options.input.quitPhrases, userInput)) {
     return {
-      running: false,
-      scene: currentScene
+      ...defaultStateDescriptor,
+      running: false
     };
   }
 
-  const nextScene = getNextScene(schemaMap, currentScene, userInput);
+  const matchingResponse = getMatchingResponse(dictionarySchema, currentScene, userInput);
+
+  if (!matchingResponse) {
+    return defaultStateDescriptor;
+  }
 
   return {
-    running: !Boolean(nextScene.ending),
-    scene: nextScene
+    ...defaultStateDescriptor,
+    scene: getNextScene(storySchema.scenes, currentScene, matchingResponse),
+    description: matchingResponse.description
   };
 }

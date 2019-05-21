@@ -1,4 +1,5 @@
 import { SchemaMap } from 'types/Schema';
+import { StateDescriptor } from 'types/Story';
 
 import * as print from 'io/print';
 import prompt from 'io/prompt';
@@ -11,17 +12,24 @@ import getStateDescriptor from 'story/utils/getStateDescriptor';
 export default async function beginStory(schemaMap: SchemaMap): Promise<boolean> {
   const { storySchema } = schemaMap;
 
-  const state = {
+  const state: StateDescriptor = {
     running: true,
-    scene: storySchema.scenes[0]
+    scene: storySchema.scenes[0],
+    description: undefined
   };
 
   while (state.running) {
-    print.msg(state.scene.description);
+    const { scene, description } = state;
+
+    print.msg(description || scene.description);
+
+    if (scene.ending) {
+      return true;
+    }
 
     const userInput = await prompt();
 
-    const nextState = getStateDescriptor(schemaMap, state.scene, userInput);
+    const nextState = getStateDescriptor(schemaMap, scene, userInput);
 
     Object.assign(state, nextState);
   }
