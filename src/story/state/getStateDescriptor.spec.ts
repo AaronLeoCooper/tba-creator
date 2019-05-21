@@ -50,5 +50,15 @@ describe('getStateDescriptor', () => {
         description: 'Response 1 description'
       });
     });
+
+    it('Should return a descriptor with the matching response description & nextScene', () => {
+      const result = getStateDescriptor(schemaMap, storySchema.scenes[0], 'open my burger');
+
+      expect(result).toEqual({
+        running: true,
+        scene: storySchema.scenes[1],
+        description: 'Response 3 description'
+      });
+    });
   });
 });

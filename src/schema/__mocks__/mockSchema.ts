@@ -15,15 +15,15 @@ export const mainSchema: MainSchema = {
       unknownPhraseWarnings: ['Unknown phrase 1', 'Unknown phrase 2', 'Unknown phrase 3']
     },
     scene: {
-      preDelayMs: 0,
-      postDelayMs: 0
+      preDelayMs: 50,
+      postDelayMs: 100
     }
   }
 };
 
 export const dictionarySchema: DictionarySchema = {
   actions: [{ name: 'open', aka: ['grab'] }],
-  objects: [{ name: 'red door' }, { name: 'blue door' }]
+  objects: [{ name: 'red door' }, { name: 'blue door' }, { name: 'sandwich', aka: ['burger'] }]
 };
 
 export const storySchema: StorySchema = {
@@ -33,7 +33,12 @@ export const storySchema: StorySchema = {
       description: 'First scene',
       responses: [
         { grammar: ['actions.open', 'objects.blue door'], description: 'Response 1 description' },
-        { grammar: ['actions.open', 'objects.red door'], nextScene: 'scene2' }
+        { grammar: ['actions.open', 'objects.red door'], nextScene: 'scene2' },
+        {
+          grammar: ['actions.open', 'objects.sandwich'],
+          description: 'Response 3 description',
+          nextScene: 'scene2'
+        }
       ]
     },
     {
