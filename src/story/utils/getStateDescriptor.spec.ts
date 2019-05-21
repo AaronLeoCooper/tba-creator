@@ -8,18 +8,18 @@ describe('getStateDescriptor', () => {
 
     expect(result).toEqual({
       running: false,
-      awaitInput: false,
-      nextScene: storySchema.scenes[0]
+      scene: storySchema.scenes[0]
     });
   });
 
-  it('Should return a descriptor with nextScene loaded from the current scene', () => {
-    const result = getStateDescriptor(schemaMap, storySchema.scenes[1]);
+  describe('No matching response', () => {
+    it('Should return a descriptor with the same scene included', () => {
+      const result = getStateDescriptor(schemaMap, storySchema.scenes[0]);
 
-    expect(result).toEqual({
-      running: true,
-      awaitInput: true,
-      nextScene: storySchema.scenes[3]
+      expect(result).toEqual({
+        running: true,
+        scene: storySchema.scenes[0]
+      });
     });
   });
 });

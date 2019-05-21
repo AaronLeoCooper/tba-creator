@@ -147,43 +147,22 @@ He looks up and asks with his mouth full, "Want some of my banana?"
   """
   [[scenes.responses]]
     grammar = [ "phrases.yes" ]
-    nextScene = "2-yes"
+    description = """
+The little monkey smiles and replies with, "Weebuddee!!! I'm so happy that you also love bananas!"
+"""
+    nextScene = "happyBananaEnding"
   [[scenes.responses]]
     grammar = [ "phrases.no" ]
-    nextScene = "2-no"
-  [[scenes.responses]]
-    grammar = [ "phrases.maybe" ]
-    nextScene = "2-maybe"
-
-[[scenes]]
-  name = "2-yes"
-  description = """
-The little monkey smiles and replies with, "Weebuddee!!! I'm so happy that you also love bananas!" 
-  """
-  nextScene = "happyBananaEnding"
-
-[[scenes]]
-  name = "2-no"
-  description = """
+    description = """
 The little monkey frowns and replies with, "Heebuddee! I should have known you weren't a true
 banana lover..." 
-  """
-  nextScene = "sadBananaEnding"
-
-[[scenes]]
-  name = "2-maybe"
-  description = """
-The little monkey looks puzzled as he replies with, "Huh?? Come on, you must have an opinion!"
-  """
-  [[scenes.responses]]
-    grammar = [ "phrases.yes" ]
-    nextScene = "2-yes"
-  [[scenes.responses]]
-    grammar = [ "phrases.no" ]
-    nextScene = "2-no"
+    """
+    nextScene = "sadBananaEnding"
   [[scenes.responses]]
     grammar = [ "phrases.maybe" ]
-    nextScene = "2-maybe"
+    description = """
+The little monkey looks puzzled as he replies with, "Huh?? Come on, you must have an opinion!"
+    """
 
 [[scenes]]
   name = "sadBananaEnding"

@@ -5,14 +5,7 @@ This is the description for scene 1
   """
   [[scenes.responses]]
     grammar = [ "phrases.yes" ]
-    nextScene = "2"
-
-[[scenes]]
-  name = "2"
-  description = """
-This is the description for scene 2
-  """
-  nextScene = "ending"
+    nextScene = "ending"
 
 [[scenes]]
   name = "ending"

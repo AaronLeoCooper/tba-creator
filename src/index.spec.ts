@@ -1,9 +1,8 @@
-import { SchemaType } from 'types/Schema';
-
 import { exit } from 'io/std';
 import * as print from 'io/print';
 import loadAllSchema from 'schema/loadAllSchema';
 import validateAllSchema from 'schema/validateAllSchema';
+import beginStory from 'story/beginStory';
 
 import main from './index';
 
@@ -17,13 +16,14 @@ jest.mock('schema/loadAllSchema', () =>
   })
 );
 jest.mock('schema/validateAllSchema', () => jest.fn().mockReturnValue(true));
+jest.mock('story/beginStory', () => jest.fn().mockResolvedValue(true));
 
 describe('index', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('Should call loadAllSchema and validateAllSchema then exit with code 0 when there are no errors', async () => {
+  it('Should load & validate schema before executing beginStory when there are no errors', async () => {
     expect.hasAssertions();
 
     // @ts-ignore
@@ -38,6 +38,13 @@ describe('index', () => {
 
     expect(validateAllSchema).toHaveBeenCalledTimes(1);
     expect(validateAllSchema).toHaveBeenCalledWith({
+      mainSchema: {},
+      dictionarySchema: {},
+      storySchema: {}
+    });
+
+    expect(beginStory).toHaveBeenCalledTimes(1);
+    expect(beginStory).toHaveBeenCalledWith({
       mainSchema: {},
       dictionarySchema: {},
       storySchema: {}
@@ -74,6 +81,8 @@ describe('index', () => {
 
     expect(exit).toHaveBeenCalledTimes(1);
     expect(exit).toHaveBeenCalledWith(0);
+
+    expect(beginStory).not.toHaveBeenCalled();
   });
 
   it('Should call print.err then exit with code 1 when loadSchema throws an error', async () => {
@@ -94,5 +103,7 @@ describe('index', () => {
 
     expect(exit).toHaveBeenCalledTimes(1);
     expect(exit).toHaveBeenCalledWith(1);
+
+    expect(beginStory).not.toHaveBeenCalled();
   });
 });

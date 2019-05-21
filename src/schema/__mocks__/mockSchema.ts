@@ -32,23 +32,13 @@ export const storySchema: StorySchema = {
       name: 'scene1',
       description: 'First scene',
       responses: [
-        { grammar: ['actions.open', 'objects.blue door'], nextScene: 'scene2a' },
-        { grammar: ['actions.grab', 'objects.red door'], nextScene: 'scene2b' }
+        { grammar: ['actions.open', 'objects.blue door'], description: 'Response 1 description' },
+        { grammar: ['actions.grab', 'objects.red door'], nextScene: 'scene2' }
       ]
     },
     {
-      name: 'scene2a',
-      description: 'Second scene A',
-      nextScene: 'scene3'
-    },
-    {
-      name: 'scene2b',
-      description: 'Second scene B',
-      ending: true
-    },
-    {
-      name: 'scene3',
-      description: 'Third scene',
+      name: 'scene2',
+      description: 'Second scene',
       ending: true
     }
   ]

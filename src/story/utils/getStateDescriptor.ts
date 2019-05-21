@@ -4,8 +4,7 @@ import { InputOptions } from 'types/MainSchema';
 
 interface StateDescriptor {
   running: boolean;
-  awaitInput: boolean;
-  nextScene: Scene;
+  scene: Scene;
 }
 
 /**
@@ -30,19 +29,6 @@ function getNextScene(
   currentScene: Scene,
   userInput?: string
 ): Scene {
-  const { dictionarySchema, storySchema } = schemaMap;
-  const { scenes } = storySchema;
-
-  if (currentScene.nextScene) {
-    const nextScene = scenes.find((scene): boolean => scene.name === currentScene.nextScene);
-
-    if (!nextScene) {
-      throw new Error('Scene not found');
-    }
-
-    return nextScene;
-  }
-
   return currentScene;
 }
 
@@ -63,16 +49,14 @@ export default function getStateDescriptor(
   if (isQuitPhrase(mainSchema.options.input, userInput)) {
     return {
       running: false,
-      awaitInput: false,
-      nextScene: currentScene
+      scene: currentScene
     };
   }
 
   const nextScene = getNextScene(schemaMap, currentScene, userInput);
 
   return {
-    running: Boolean(nextScene.ending),
-    awaitInput: !Boolean(nextScene.nextScene),
-    nextScene
+    running: !Boolean(nextScene.ending),
+    scene: nextScene
   };
 }

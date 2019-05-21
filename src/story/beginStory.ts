@@ -1,31 +1,30 @@
 import { SchemaMap } from 'types/Schema';
 
 import * as print from 'io/print';
-import { exit } from 'io/std';
 import prompt from 'io/prompt';
+import getStateDescriptor from 'story/utils/getStateDescriptor';
 
 /**
  * Starts the main story loop.
  * @param schemaMap {SchemaMap}
  */
 export default async function beginStory(schemaMap: SchemaMap): Promise<boolean> {
-  const { mainSchema, storySchema } = schemaMap;
-  const { options } = mainSchema;
+  const { storySchema } = schemaMap;
 
-  let running = true;
-  let scene = storySchema.scenes[0];
+  const state = {
+    running: true,
+    scene: storySchema.scenes[0]
+  };
 
-  while (running) {
-    print.msg(scene.description);
+  while (state.running) {
+    print.msg(state.scene.description);
 
-    const input = await prompt();
+    const userInput = await prompt();
 
-    if (options.input.quitPhrases.includes(input)) {
-      running = false;
+    const nextState = getStateDescriptor(schemaMap, state.scene, userInput);
 
-      return exit(0);
-    }
+    Object.assign(state, nextState);
   }
 
-  return exit(0);
+  return true;
 }
