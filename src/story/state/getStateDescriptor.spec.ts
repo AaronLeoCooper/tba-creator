@@ -1,6 +1,10 @@
-import { schemaMap, storySchema } from 'schema/__mocks__/mockSchema';
+import { mainSchema, schemaMap, storySchema } from 'schema/__mocks__/mockSchema';
+
+import getRandomElement from 'story/utils/getRandomElement';
 
 import getStateDescriptor from './getStateDescriptor';
+
+jest.mock('story/utils/getRandomElement', () => jest.fn((arr) => arr[0]));
 
 describe('getStateDescriptor', () => {
   it('Should return a descriptor with running: false when a quit phrase is entered', () => {
@@ -13,13 +17,17 @@ describe('getStateDescriptor', () => {
   });
 
   describe('No matching response', () => {
-    it('Should return a descriptor with the same scene included', () => {
+    it('Should return a descriptor with a random unknown phrase message', () => {
       const result = getStateDescriptor(schemaMap, storySchema.scenes[0]);
 
       expect(result).toEqual({
         running: true,
-        scene: storySchema.scenes[0]
+        scene: storySchema.scenes[0],
+        description: 'Unknown phrase 1'
       });
+
+      expect(getRandomElement).toHaveBeenCalledTimes(1);
+      expect(getRandomElement).toHaveBeenCalledWith(mainSchema.options.input.unknownPhraseWarnings);
     });
   });
 

@@ -2,13 +2,13 @@ import { schemaMap, storySchema } from 'schema/__mocks__/mockSchema';
 
 import * as print from 'io/print';
 import prompt from 'io/prompt';
-import getStateDescriptor from 'story/utils/getStateDescriptor';
+import getStateDescriptor from './state/getStateDescriptor';
 
 import beginStory from './beginStory';
 
 jest.mock('io/print');
 jest.mock('io/prompt');
-jest.mock('story/utils/getStateDescriptor', () =>
+jest.mock('story/state/getStateDescriptor', () =>
   jest.fn().mockReturnValue({
     running: false
   })

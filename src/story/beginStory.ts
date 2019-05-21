@@ -3,7 +3,7 @@ import { StateDescriptor } from 'types/Story';
 
 import * as print from 'io/print';
 import prompt from 'io/prompt';
-import getStateDescriptor from 'story/utils/getStateDescriptor';
+import getStateDescriptor from 'story/state/getStateDescriptor';
 
 /**
  * Starts the main story loop.

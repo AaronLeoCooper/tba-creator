@@ -23,7 +23,7 @@ export const mainSchema: MainSchema = {
 
 export const dictionarySchema: DictionarySchema = {
   actions: [{ name: 'open', aka: ['grab'] }],
-  objects: [{ name: 'red door' }, { name: 'blue door', aka: ['door'] }]
+  objects: [{ name: 'red door' }, { name: 'blue door' }]
 };
 
 export const storySchema: StorySchema = {
