@@ -1,9 +1,9 @@
-import loadSchema from 'schema/loadSchema';
-import FileMissingError from 'schema/FileMissingError';
+import loadSchema from './loaders/loadSchema';
+import FileMissingError from './errors/FileMissingError';
 
 import loadAllSchema from './loadAllSchema';
 
-jest.mock('schema/loadSchema');
+jest.mock('schema/loaders/loadSchema');
 
 describe('loadAllSchema', () => {
   it('Should reject with an error when once of the schema files fails to load', async () => {

@@ -47,7 +47,7 @@ const questions: Question[] = [
   }
 ];
 
-(async function runPrompt() {
+(async function runPrompt(): Promise<void> {
   console.log(
     'Welcome to create-tba-game. This program will ' +
       'create the basic setup required to start working ' +

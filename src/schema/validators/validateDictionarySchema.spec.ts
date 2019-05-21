@@ -1,6 +1,6 @@
-import { DictionarySchema } from 'types/DictionarySchema';
+import { DictionarySchema } from '../../types/DictionarySchema';
 
-import SchemaValidationError from './SchemaValidationError';
+import SchemaValidationError from '../errors/SchemaValidationError';
 
 import validateDictionarySchema from './validateDictionarySchema';
 

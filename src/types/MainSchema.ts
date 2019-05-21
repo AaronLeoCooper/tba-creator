@@ -3,7 +3,7 @@ interface SceneOptions {
   postDelayMs: number;
 }
 
-interface InputOptions {
+export interface InputOptions {
   caseSensitive: boolean;
   quitPhrases: string[];
   unknownPhraseWarnings: string[];

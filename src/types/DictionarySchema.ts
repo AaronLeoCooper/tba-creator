@@ -1,6 +1,6 @@
 interface DictionaryItem {
   name: string;
-  aka: string[];
+  aka?: string[];
 }
 
 export interface DictionarySchema {
