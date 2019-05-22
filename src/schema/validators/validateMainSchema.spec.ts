@@ -1,7 +1,7 @@
-import { SchemaType } from 'types/Schema';
+import { SchemaType } from '../../types/Schema';
 
-import setSchemaDefaults from './setSchemaDefaults';
-import SchemaValidationError from './SchemaValidationError';
+import setSchemaDefaults from '../loaders/setSchemaDefaults';
+import SchemaValidationError from '../errors/SchemaValidationError';
 
 import validateMainSchema from './validateMainSchema';
 

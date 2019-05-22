@@ -15,3 +15,9 @@ export enum SchemaType {
   dictionary = 'dictionary',
   story = 'story'
 }
+
+export interface SchemaMap {
+  mainSchema: MainSchema;
+  dictionarySchema: DictionarySchema;
+  storySchema: StorySchema;
+}

@@ -1,13 +1,13 @@
-interface InputResponse {
+export interface InputResponse {
   grammar: string[];
-  nextScene: string;
+  nextScene?: string;
+  description?: string;
 }
 
-interface Scene {
+export interface Scene {
   name: string;
   description: string;
   responses?: InputResponse[];
-  nextScene?: string;
   ending?: boolean;
 }
 

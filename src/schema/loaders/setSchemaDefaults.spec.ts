@@ -1,7 +1,7 @@
-import { MainSchema } from 'types/MainSchema';
-import { SchemaType } from 'types/Schema';
-import { DictionarySchema } from 'types/DictionarySchema';
-import { StorySchema } from 'types/StorySchema';
+import { MainSchema } from '../../types/MainSchema';
+import { SchemaType } from '../../types/Schema';
+import { DictionarySchema } from '../../types/DictionarySchema';
+import { StorySchema } from '../../types/StorySchema';
 
 import setSchemaDefaults, {
   dictionaryDefaults,

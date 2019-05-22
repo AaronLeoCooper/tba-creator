@@ -1,6 +1,6 @@
 import { MainSchema } from 'types/MainSchema';
 
-import SchemaValidationError, { SchemaValidationErrorType } from 'schema/SchemaValidationError';
+import SchemaValidationError, { SchemaValidationErrorType } from 'schema/errors/SchemaValidationError';
 
 const fileName = 'main.toml';
 

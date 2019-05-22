@@ -4,6 +4,8 @@ import yargs from 'yargs';
 import * as print from 'io/print';
 import { exit } from 'io/std';
 import loadAllSchema from 'schema/loadAllSchema';
+import validateAllSchema from 'schema/validateAllSchema';
+import beginStory from 'story/beginStory';
 
 const args = yargs.options({
   o: {
@@ -32,12 +34,15 @@ export default async function main(schemaDir: string, options: MainOptions = {})
 
   try {
     const schemaMap = await loadAllSchema(schemaDir);
+    validateAllSchema(schemaMap);
 
     if (onlyValidate) {
       print.msg('All required schema files are present and valid');
 
       return exit(0);
     }
+
+    await beginStory(schemaMap);
 
     return exit(0);
   } catch (err) {

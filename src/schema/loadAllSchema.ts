@@ -1,21 +1,12 @@
-import { MainSchema } from 'types/MainSchema';
-import { DictionarySchema } from 'types/DictionarySchema';
-import { StorySchema } from 'types/StorySchema';
-import { SchemaType } from 'types/Schema';
+import { SchemaMap, SchemaType } from 'types/Schema';
 
-import loadSchema from 'schema/loadSchema';
-
-interface SchemaMap {
-  mainSchema: MainSchema;
-  dictionarySchema: DictionarySchema;
-  storySchema: StorySchema;
-}
+import loadSchema from 'schema/loaders/loadSchema';
 
 /**
  * Asynchronously loads all schema files and returns an object containing all
  * schema objects.
  * @param schemaDir {string}
- * @throws {(FileMissingError|SchemaValidationError|Error)}
+ * @throws {FileMissingError}
  * @returns {SchemaMap}
  */
 export default async function loadAllSchema(schemaDir: string): Promise<SchemaMap> {

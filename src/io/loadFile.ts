@@ -1,7 +1,7 @@
 import { readFile } from 'fs';
 import { resolve as resolvePath } from 'path';
 
-import FileMissingError from 'schema/FileMissingError';
+import FileMissingError from 'schema/errors/FileMissingError';
 
 /**
  * Load a single file at the given path and return its content as a string.
