@@ -18,7 +18,7 @@ jobs:
             - v1-dependencies-
       - run:
           name: Install dependencies
-          command: yarn install
+          command: yarn install --force
       - save_cache:
           paths:
             - node_modules
@@ -28,7 +28,7 @@ jobs:
           command: yarn lint
       - run:
           name: Unit tests
-          command: yarn test --ci --runInBand
+          command: yarn test
       - store_test_results:
           path: reports/junit
       - store_artifacts:
@@ -49,7 +49,7 @@ jobs:
 #          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
 #      - run:
 #          name: Publish package
-#          command: npm publish
+#          command: yarn publish
 
 workflows:
   version: 2.1
