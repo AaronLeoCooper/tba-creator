@@ -10,6 +10,13 @@ export interface CreateOptions {
   template: Template;
 }
 
+/**
+ * Returns the passed template string with any given replacement variables replaced with
+ * their respective value.
+ * @param templateContent {string}
+ * @param replacements {string[]}
+ * @returns {string}
+ */
 export function getFilledTemplate(templateContent: string, replacements: string[][]): string {
   return replacements.reduce(
     (acc, [name, replacement]): string =>
@@ -18,18 +25,22 @@ export function getFilledTemplate(templateContent: string, replacements: string[
   );
 }
 
-export default function create(options: CreateOptions): void {
+/**
+ * Creates the directory structure and files for the TBA game based on the
+ * passed configuration options.
+ * @param options {CreateOptions}
+ */
+export default function createGame(options: CreateOptions): number {
   const { title, about, dirName, template } = options;
 
-  const replacements = [['title', title], ['about', about], ['version', '*']];
+  const replacements = [['title', title], ['about', about], ['dirName', dirName], ['version', '*']];
 
   const targetPath = resolve(process.cwd(), dirName);
 
   if (existsSync(targetPath)) {
-    console.error(`Target folder already exists, enter a new folder name`);
+    console.error('Target folder already exists, enter a new folder name');
 
-    process.exit(1);
-    return;
+    return 1;
   }
 
   mkdirSync(targetPath);
@@ -54,7 +65,7 @@ export default function create(options: CreateOptions): void {
     }
   );
 
-  console.log(
-    `Created ${dirName} folder successfully. ` + 'Change to that folder and run npm install.'
-  );
+  console.log(`Created ${dirName} folder successfully. Change to that folder and run npm install.`);
+
+  return 0;
 }

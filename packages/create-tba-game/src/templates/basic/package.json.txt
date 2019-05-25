@@ -1,10 +1,9 @@
 {
-  "name": "$title$",
-  "version": "1.0.0",
+  "name": "$dirName$",
   "scripts": {
-    "start": "tbac"
+    "start": "tbag"
   },
   "dependencies": {
-    "tba-creator": "$version$"
+    "tba-game": "$version$"
   }
 }

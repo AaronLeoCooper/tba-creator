@@ -1,54 +1,69 @@
-# Text-Based Adventure Creator - Turn data into a TBA game!
+# Text-Based Adventure Creator
 
-Remember that classic game genre? The "Text-Based Adventure"? If you were born after the
-early nineties, maybe not.
+> Turn text into a Text-Based Adventure game! 🕹🎲⚔
 
-But anyway, for those of us who *do* recall those sessions staring at a terminal-esque window,
+[![CircleCI branch](https://img.shields.io/circleci/project/github/AaronLeoCooper/tba-creator/master.svg?style=flat-square)](https://circleci.com/gh/AaronLeoCooper/tba-creator/tree/master)
+
+Remember that classic game genre? The "Text-Based Adventure"? No? Oh, it's already 2019..
+
+But anyway, for those of us who *do* recall those sessions staring at a plain terminal window,
 considering which direction to take at the fork in the forest path, this is **your** chance to
-create you very own Text-Based Adventure story/game/experience.
+create you very own Text-Based Adventure story/game/experience with ease!
 
 ## Usage
 
-TBA Creator was designed to operate as a command-line program that loads in your custom files,
-called *Schema*. These Schema are what tell TBA Creator how you want your text-based adventure
-to work. See the Schema section for more complete information about what's possible.
+**TBA Creator** is a program that loads in files you create that tell the game everything from
+the name and description of your game, the scenes that the player will encounter and the phrases
+that the game will attempt to pick out from the user's input.
 
-First, install the program either globally *or* locally:
+See the [Schema](#Schema) section for more complete information about what's possible.
 
-```bash
-# global
-npm i -g tba-creator
-
-# local
-npm i tba-creator
-```
-
-Here's a simple usage example of the program that will start by loading
-schema files located inside a `schema` directory:
+The easiest way to get started is to use the `create-tba-game` tool to generate yourself a starter
+game to work on top of.
 
 ```bash
-tbac ./schema
+# via NPM:
+npx create-tba-game
+
+# or via Yarn:
+yarn create tba-game
 ```
 
-> Tip: `tbac` is an alias for the full program name `tba-creator`. You can use either.
+The generator will prompt you with a series of questions to create a personalised starting point.
+The choices made will affect the resulting configuration files, which you can change later anyway.
+
+Once installed, change into the newly created directory (based on the name you entered during
+setup), install the dependencies and then start the game:
+
+```bash
+npm install
+npm start
+```
 
 ## Schema
 
 TBA Creator works with the [TOML](https://github.com/toml-lang/toml) data format, chosen for
-its quick and easy editing whilst being very readable. Other more common formats like JSON and
-YAML were discounted very early on in development due to the hassles involved with creating
-and updating them. For writing stories, there should be as little friction as possible between
-your creativity and your writing medium.
+its quick and easy editing whilst being extremely readable as compared to other more commonly
+used data formats. TBA Creator attempts to introduce as little friction as possible between your
+creativity and your writing medium.
 
-You can make TBA Creator as easy or as complex as you want it to be. You may want to start by
-having one big Schema that your entire story sits in and work your way up from there.
+With this in mind, TBA Creator requires you to have three schema files for your game to operate:
+
+- [main.toml](#main.toml)
+- [dictionary.toml](#dictionary.toml)
+- [story.toml](#story.toml)
+
+If you created your game using the [create-tba-game](#Usage) program, you will already have a basic
+set of all the required schema files ready to go. They just need your creative genius to turn them
+into your ideal adventure game.
 
 ### main.toml
 
-This is where you can configure globally-applied settings for your whole TBA. This is the file
-that you need to point the `tba-creator` program at to start your TBA correctly.
+This is where you can configure global settings for your whole TBA game. Things like the name and
+description of the game live here, as well as settings that will affect some of the workings of
+the game as a whole.
 
-Here's an example `main.toml` schema file:
+Here's an example `main.toml` schema file with all of the available settings listed:
 
 ```toml
 [description]
@@ -74,67 +89,77 @@ unknownPhraseWarnings = [ # Displays a message randomly when the user enters an 
 
 ### dictionary.toml
 
-This is where you will add any and all phrases that your text-based adventure will understand
-from the user's input. Without this, your adventure will not last long! In fact, it won't even
-be a functional adventure, because it won't know what to do when the user types anything.
+The dictionary is as it sounds: a listing of all the available words and phrases that your game
+will understand and attempt to match against the user's typed instructions. The dictionary is
+broken up into types of words/phrases, such as objects, directions or misc phrases.
+
+You're completely free to create types that make sense for your story. For instance, I might be
+writing an epic tale about the Jelly Baby empire being under siege by the terrifying Wine
+Gums, so I may want a "jellyBaby" phrase type to categorise all the possible jelly colours.
 
 Here's an example `dictionary.toml` schema file:
 
 ```toml
-# Actions
 [[actions]]
 name = "walk"
-aka = [ "walk", "run", "hop", "skip" ]
+aka = [ "run", "hop", "skip" ]
 
 [[actions]]
 name = "run"
-aka = [ "run", "sprint", "dash" ]
+aka = [ "sprint", "dash" ]
 
 [[actions]]
 name = "take"
-aka = [ "take", "grab" ]
+aka = [ "grab" ]
 
 [[actions]]
 name = "open"
 
-# Entities
-[[entities]]
+[[directions]]
 name = "north"
 
-[[entities]]
+[[directions]]
 name = "south"
 
-[[entities]]
-name = "blueDoor"
-aka = [ "door", "blue door" ]
+[[objects]]
+name = "blue door"
+aka = [ "door" ]
 
-[[entities]]
-name = "greenDoor"
-aka = [ "door", "green door" ]
+[[objects]]
+name = "green door"
+aka = [ "door" ]
 
-# Phrases
 [[phrases]]
 name = "yes"
-aka = [ "yes", "y", "yup" ]
+aka = [ "y", "yup" ]
 
 [[phrases]]
 name = "no"
-aka = [ "no", "n", "nope" ]
+aka = [ "n", "nope" ]
 
-[[phrases]]
-name = "maybe"
-aka = [ "maybe", "umm", "?" ]
+# You can create any type of phrase you want, here's a "jellyBaby" type...
+[[jellyBaby]]
+name = "green"
+
+[[jellyBaby]]
+name = "red"
 ```
 
 ### story.toml
 
 This is where your story will be defined! If you think about how a text-based adventure game or
 a choose-your-own-adventure book plays out, you go from one scene to another scene in a linear
-fashion, based on your interactions.
+fashion, based on your interactions. Sometimes you may revisit scenes you encountered before,
+or maybe just want to look a bit more carefully at something in a scene to get more information
+about your surroundings. These are all possible in your story.
 
-That's how the story schema flows as well, by requiring you to define individual scenes that will
-be presented, as well as specifying scenes that can possibly come next, depending on the user's
-actions.
+The story schema requires you to define individual scenes that can be encountered, specifying
+any possible responses that the scene can give the user based on their actions. Scene responses
+could take the story to another scene, or simply give the user a description relating to what
+actions they entered.
+
+If a scene is marked as an ending, once that scene is reached the game will end just after
+displaying the scene description.
 
 Here's an example `story.toml` schema:
 
@@ -180,17 +205,16 @@ face too. He slides over to you and hands you his precious banana! THE END!
   ending = true
 ```
 
-## Support
+## Platform Support
 
 Currently support is only provided for the command line and has been tested in macOS and Windows.
-However, depending on the success of this iteration, support may be added in the future for
-running in the browser, opening up possibilities like displaying graphics or having fancy
-input methods.
-
-I/O handling was strictly decoupled from any core logic, so adding support for new interfaces
-later should not be too difficult.
+However, support may be added in the future for running in the browser, opening up possibilities
+like displaying graphics or having more fancy user interaction methods.
 
 ## About
 
 TBA Creator was built using TypeScript for a bit of fun and exploration. I was heavily inspired
-by some of the games of my youth like Zork and Choose Your Own Adventure books.
+by some of the games of my youth like Zork and "Choose Your Own Adventure" books.
+
+This project is managed using [Lerna](https://github.com/lerna/lerna) and consists of multiple
+child packages inside the `packages` directory that get published to NPM.
