@@ -1,4 +1,8 @@
-# Text-Based Adventure Creator - Turn data into a TBA game!
+# Text-Based Adventure Creator
+
+> Turn text into a Text-Based Adventure game! 🕹🎲⚔
+
+[![CircleCI branch](https://img.shields.io/circleci/project/github/AaronLeoCooper/tba-creator/master.svg?style=flat-square)](https://circleci.com/gh/AaronLeoCooper/tba-creator/tree/master)
 
 Remember that classic game genre? The "Text-Based Adventure"? No? Oh, it's already 2019..
 
@@ -29,9 +33,10 @@ The generator will prompt you with a series of questions to create a personalise
 The choices made will affect the resulting configuration files, which you can change later anyway.
 
 Once installed, change into the newly created directory (based on the name you entered during
-setup) and start the game:
+setup), install the dependencies and then start the game:
 
 ```bash
+npm install
 npm start
 ```
 
@@ -210,3 +215,6 @@ like displaying graphics or having more fancy user interaction methods.
 
 TBA Creator was built using TypeScript for a bit of fun and exploration. I was heavily inspired
 by some of the games of my youth like Zork and "Choose Your Own Adventure" books.
+
+This project is managed using [Lerna](https://github.com/lerna/lerna) and consists of multiple
+child packages inside the `packages` directory that get published to NPM.
