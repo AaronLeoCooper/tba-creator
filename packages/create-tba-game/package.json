@@ -1,7 +1,7 @@
 {
   "name": "create-tba-game",
   "version": "0.0.1",
-  "description": "Creates a new Text-Based Adventure game utilising tba-creator",
+  "description": "Creates a new Text-Based Adventure game utilising tba-game",
   "main": "src/index.ts",
   "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",

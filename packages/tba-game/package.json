@@ -1,5 +1,5 @@
 {
-  "name": "tba-creator",
+  "name": "tba-game",
   "version": "0.0.1",
   "description": "Text-Based Adventure Creator - Turn data into a TBA game!",
   "main": "src/index.ts",
@@ -7,8 +7,8 @@
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
   "bin": {
-    "tba-creator": "build/index.js",
-    "tbac": "build/index.js"
+    "tba-game": "build/index.js",
+    "tbag": "build/index.js"
   },
   "files": ["build"],
   "scripts": {
