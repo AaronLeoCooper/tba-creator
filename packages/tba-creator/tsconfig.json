@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig/tsconfig.base",
+  "compilerOptions": {
+    "outDir": "./build",
+    "baseUrl": "./src"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "../../node_modules",
+    "node_modules",
+    "**/*.spec.ts",
+    "**/__mocks__"
+  ]
+}
