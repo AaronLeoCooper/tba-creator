@@ -7,7 +7,7 @@
 Want to write your own Text-Based Adventure Game without any programming knowledge?
 This is your chance to do exactly that with **TBA Game**! 🕹🎲
 
-This project sits in the monorepo for the [tba-creator][tbac] parent project and is automatically
+This package sits in the monorepo for the [tba-creator][tbac] parent project and is automatically
 installed when using the [create-tba-game][create-tba-game] CLI tool.
 
 ## Usage

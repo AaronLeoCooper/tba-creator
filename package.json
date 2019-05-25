@@ -1,7 +1,9 @@
 {
   "name": "tba-creator",
-  "version": "0.0.1",
-  "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AaronLeoCooper/tba-creator.git"
+  },
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
   "private": true,

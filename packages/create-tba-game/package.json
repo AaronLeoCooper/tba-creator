@@ -10,8 +10,12 @@
     "javascript",
     "cli"
   ],
-  "main": "src/index.ts",
-  "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AaronLeoCooper/tba-creator.git",
+    "directory": "packages/create-tba-game"
+  },
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
   "bin": {
