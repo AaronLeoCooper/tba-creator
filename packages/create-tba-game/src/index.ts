@@ -1,16 +1,17 @@
-#!/usr/bin/env node
-
 import * as inquirer from 'inquirer';
 import { Question, Answers } from 'inquirer';
 
-import create from './create';
-import { CreateOptions } from './create';
+import createGame from './createGame';
+import { CreateOptions } from './createGame';
 
-const trim = (str: string): string => str.trim();
+const trim = (str: string = ''): string => str.trim();
 
-const getKebabCase = (str: string): string => trim(str).replace(/ /g, '-');
+const getKebabCase = (str: string = ''): string =>
+  trim(str)
+    .replace(/ /g, '-')
+    .toLowerCase();
 
-const questions: Question[] = [
+export const questions: Question[] = [
   {
     name: 'title',
     message: 'Enter your game title',
@@ -47,7 +48,7 @@ const questions: Question[] = [
   }
 ];
 
-(async function runPrompt(): Promise<void> {
+export default async function runPrompt(): Promise<void> {
   console.log(
     'Welcome to create-tba-game. This program will ' +
       'create the basic setup required to start working ' +
@@ -61,9 +62,16 @@ const questions: Question[] = [
   const options: CreateOptions = {
     title: trim(title),
     about: trim(about),
-    dirName: trim(dirName),
+    dirName: getKebabCase(dirName),
     template: 'basic'
   };
 
-  create(options);
-})();
+  const exitCode = createGame(options);
+
+  process.exit(exitCode);
+}
+
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'test') {
+  runPrompt();
+}

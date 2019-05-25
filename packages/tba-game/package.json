@@ -1,20 +1,26 @@
 {
-  "name": "tba-creator",
+  "name": "tba-game",
   "version": "0.0.1",
   "description": "Text-Based Adventure Creator - Turn data into a TBA game!",
-  "main": "src/index.ts",
-  "repository": "git@github.com:AaronLeoCooper/tba-creator.git",
+  "keywords": ["text-based-adventure", "game", "tba", "tba-game", "javascript"],
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AaronLeoCooper/tba-creator.git",
+    "directory": "packages/tba-game"
+  },
   "author": "Aaron Leo Cooper <aaronleocooper@gmail.com>",
   "license": "MIT",
   "bin": {
-    "tba-creator": "build/index.js",
-    "tbac": "build/index.js"
+    "tba-game": "build/index.js",
+    "tbag": "build/index.js"
   },
   "files": ["build"],
   "scripts": {
     "start": "ts-node --project \"tsconfig.json\" \"src/index.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc -p \"tsconfig.json\"",
+    "postbuild": "node \"scripts/postBuild.js\"",
     "clean": "rimraf \"./build\"",
     "validate": "run-s lint test build",
     "test": "jest --coverage --runInBand --ci",
@@ -30,6 +36,7 @@
     "eslint-config-prettier": "4.1.0",
     "jest": "24.7.1",
     "npm-run-all": "4.1.5",
+    "prepend-file": "1.3.1",
     "prettier": "1.17.0",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
