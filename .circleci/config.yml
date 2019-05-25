@@ -29,10 +29,6 @@ jobs:
       - run:
           name: Unit tests
           command: yarn test
-      - store_test_results:
-          path: reports/junit
-      - store_artifacts:
-          path: reports/junit
       - run:
           name: Build
           command: yarn build
