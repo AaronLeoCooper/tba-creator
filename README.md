@@ -49,9 +49,9 @@ creativity and your writing medium.
 
 With this in mind, TBA Creator requires you to have three schema files for your game to operate:
 
-- [main.toml](#main.toml)
-- [dictionary.toml](#dictionary.toml)
-- [story.toml](#story.toml)
+- [main.toml](#maintoml)
+- [dictionary.toml](#dictionarytoml)
+- [story.toml](#storytoml)
 
 If you created your game using the [create-tba-game](#Usage) program, you will already have a basic
 set of all the required schema files ready to go. They just need your creative genius to turn them
