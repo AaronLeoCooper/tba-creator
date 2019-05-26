@@ -28,6 +28,7 @@
     "@typescript-eslint/parser": "1.7.0",
     "eslint": "5.16.0",
     "eslint-config-prettier": "4.1.0",
+    "husky": "2.3.0",
     "lerna": "3.14.1",
     "prettier": "1.17.0"
   }
