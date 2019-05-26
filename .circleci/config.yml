@@ -35,17 +35,17 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           paths: .
-#  deploy:
-#    <<: *defaults
-#    steps:
-#      - attach_workspace:
-#          at: ~/repo
-#      - run:
-#          name: Authenticate with registry
-#          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-#      - run:
-#          name: Publish package
-#          command: yarn publish
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish packages
+          command: ./node_modules/.bin/lerna publish
 
 workflows:
   version: 2.1
@@ -55,11 +55,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-#      - deploy:
-#          requires:
-#            - build
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /^v.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /^master$/
+            tags:
+              only: /^v.*/
