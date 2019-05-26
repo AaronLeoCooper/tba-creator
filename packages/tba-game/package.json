@@ -1,8 +1,14 @@
 {
   "name": "tba-game",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Text-Based Adventure Creator - Turn data into a TBA game!",
-  "keywords": ["text-based-adventure", "game", "tba", "tba-game", "javascript"],
+  "keywords": [
+    "text-based-adventure",
+    "game",
+    "tba",
+    "tba-game",
+    "javascript"
+  ],
   "main": "build/index.js",
   "repository": {
     "type": "git",
@@ -15,7 +21,9 @@
     "tba-game": "build/index.js",
     "tbag": "build/index.js"
   },
-  "files": ["build"],
+  "files": [
+    "build"
+  ],
   "scripts": {
     "start": "ts-node --project \"tsconfig.json\" \"src/index.ts\"",
     "prebuild": "npm run clean",

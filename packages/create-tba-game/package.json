@@ -1,6 +1,6 @@
 {
   "name": "create-tba-game",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Creates a new Text-Based Adventure game utilising tba-game",
   "keywords": [
     "text-based-adventure",
