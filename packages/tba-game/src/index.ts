@@ -3,6 +3,7 @@ import yargs from 'yargs';
 
 import * as print from './io/print';
 import { exit } from './io/std';
+import clearScreen from './io/clearScreen';
 import loadAllSchema from './schema/loadAllSchema';
 import validateAllSchema from './schema/validateAllSchema';
 import beginStory from './story/beginStory';
@@ -41,6 +42,8 @@ export default async function main(schemaDir: string, options: MainOptions = {})
 
       return exit(0);
     }
+
+    clearScreen();
 
     await beginStory(schemaMap);
 

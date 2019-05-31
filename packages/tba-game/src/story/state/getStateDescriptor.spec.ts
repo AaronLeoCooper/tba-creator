@@ -23,7 +23,7 @@ describe('getStateDescriptor', () => {
       expect(result).toEqual({
         running: true,
         scene: storySchema.scenes[0],
-        description: 'Unknown phrase 1'
+        responseDescription: 'Unknown phrase 1'
       });
 
       expect(getRandomElement).toHaveBeenCalledTimes(1);
@@ -47,7 +47,7 @@ describe('getStateDescriptor', () => {
       expect(result).toEqual({
         running: true,
         scene: storySchema.scenes[0],
-        description: 'Response 1 description'
+        responseDescription: 'Response 1 description'
       });
     });
 
@@ -57,7 +57,7 @@ describe('getStateDescriptor', () => {
       expect(result).toEqual({
         running: true,
         scene: storySchema.scenes[1],
-        description: 'Response 3 description'
+        responseDescription: 'Response 3 description'
       });
     });
   });

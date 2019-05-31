@@ -40,13 +40,13 @@ export default function getStateDescriptor(
   if (!matchingResponse) {
     return {
       ...defaultStateDescriptor,
-      description: getRandomElement(inputOptions.unknownPhraseWarnings)
+      responseDescription: getRandomElement(inputOptions.unknownPhraseWarnings)
     };
   }
 
   return {
     ...defaultStateDescriptor,
     scene: getNextScene(storySchema.scenes, currentScene, matchingResponse),
-    description: matchingResponse.description
+    responseDescription: matchingResponse.description
   };
 }
