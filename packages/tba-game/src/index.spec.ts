@@ -1,5 +1,6 @@
 import { exit } from './io/std';
 import * as print from './io/print';
+import clearScreen from './io/clearScreen';
 import loadAllSchema from './schema/loadAllSchema';
 import validateAllSchema from './schema/validateAllSchema';
 import beginStory from './story/beginStory';
@@ -8,6 +9,7 @@ import main from './index';
 
 jest.mock('./io/std');
 jest.mock('./io/print');
+jest.mock('./io/clearScreen');
 jest.mock('./schema/loadAllSchema', () =>
   jest.fn().mockResolvedValue({
     mainSchema: {},
@@ -21,6 +23,16 @@ jest.mock('./story/beginStory', () => jest.fn().mockResolvedValue(true));
 describe('index', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('Should clear the terminal screen before executing beginStory', async () => {
+    expect.hasAssertions();
+
+    await main('test/dir');
+
+    expect(clearScreen).toHaveBeenCalledTimes(1);
+
+    expect(beginStory).toHaveBeenCalledTimes(1);
   });
 
   it('Should load & validate schema before executing beginStory when there are no errors', async () => {

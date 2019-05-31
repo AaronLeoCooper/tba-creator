@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { msg, err } from './print';
 
 jest.mock('chalk', () => ({
-  red: jest.fn()
+  red: jest.fn((...msgs) => msgs.join(' '))
 }));
 
 describe('print', () => {
@@ -17,7 +17,7 @@ describe('print', () => {
 
       msg('Test text');
 
-      expect(console.log).toHaveBeenCalledWith('Test text');
+      expect(console.log).toHaveBeenCalledWith('Test text', '\r\n');
     });
   });
 
@@ -29,6 +29,7 @@ describe('print', () => {
 
       expect(chalk.red).toHaveBeenCalledWith('ERROR:', 'Error text');
       expect(console.error).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledWith('ERROR: Error text', '\r\n');
     });
   });
 });

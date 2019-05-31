@@ -16,19 +16,27 @@ export default async function beginStory(schemaMap: SchemaMap): Promise<boolean>
 
   const delayedPrint = getDelayedPrint({ preDelayMs, postDelayMs });
 
+  const { name, about } = mainSchema.description;
+
+  await delayedPrint(name);
+
+  if (about) {
+    await delayedPrint(about);
+  }
+
   let previousScene: Scene | void;
 
   const state: StateDescriptor = {
     running: true,
     scene: storySchema.scenes[0],
-    description: undefined
+    responseDescription: undefined
   };
 
   while (state.running) {
-    const { scene, description } = state;
+    const { scene, responseDescription } = state;
 
-    if (description) {
-      await delayedPrint(description);
+    if (responseDescription) {
+      await delayedPrint(responseDescription);
 
       if (previousScene && previousScene.name !== scene.name) {
         await delayedPrint(scene.description);

@@ -1,11 +1,13 @@
 import chalk from 'chalk';
 
+const newLine = '\r\n';
+
 /**
  * Print to stdout with a trailing newline.
  * @param messages {string[]}
  */
 export function msg(...messages: string[]): void {
-  console.log(...messages);
+  console.log(...messages, newLine);
 }
 
 /**
@@ -13,5 +15,5 @@ export function msg(...messages: string[]): void {
  * @param messages {string[]}
  */
 export function err(...messages: string[]): void {
-  console.error(chalk.red('ERROR:', ...messages));
+  console.error(chalk.red('ERROR:', ...messages), newLine);
 }
