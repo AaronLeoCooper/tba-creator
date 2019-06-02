@@ -1,6 +1,7 @@
 import { DictionarySchema } from '../../types/DictionarySchema';
 
 import SchemaValidationError, { SchemaValidationErrorType } from '../errors/SchemaValidationError';
+import getNextDuplicateIndex from './getNextDuplicateIndex';
 
 const fileName = 'dictionary.toml';
 
@@ -12,11 +13,47 @@ const fileName = 'dictionary.toml';
  * @returns {boolean}
  */
 export default function validateDictionarySchema(schema: DictionarySchema): boolean {
-  if (Object.keys(schema).length === 0) {
+  const phraseTypes = Object.keys(schema);
+
+  if (phraseTypes.length === 0) {
     throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptySchema, [
       'phrase type'
     ]);
   }
+
+  phraseTypes.forEach(
+    (phraseType): void => {
+      const dictionaryItems = schema[phraseType];
+
+      dictionaryItems.forEach(
+        ({ name }, itemIndex): void => {
+          if (!name) {
+            throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
+              `${phraseType}[${itemIndex}]`,
+              'name'
+            ]);
+          }
+
+          const duplicateItemIndex = getNextDuplicateIndex(
+            dictionaryItems,
+            ['name', name],
+            itemIndex
+          );
+
+          if (duplicateItemIndex > -1) {
+            throw new SchemaValidationError(
+              fileName,
+              SchemaValidationErrorType.duplicateItemField,
+              ['actions', 'name'],
+              {
+                duplicateIndexes: [itemIndex, duplicateItemIndex]
+              }
+            );
+          }
+        }
+      );
+    }
+  );
 
   return true;
 }

@@ -13,7 +13,7 @@ import validateStorySchema from './validators/validateStorySchema';
 export default function validateAllSchema(schemaMap: SchemaMap): boolean {
   const validMainSchema = validateMainSchema(schemaMap.mainSchema);
   const validDictionarySchema = validateDictionarySchema(schemaMap.dictionarySchema);
-  const validStorySchema = validateStorySchema(schemaMap.storySchema);
+  const validStorySchema = validateStorySchema(schemaMap.storySchema, schemaMap.dictionarySchema);
 
   return Boolean(validMainSchema && validDictionarySchema && validStorySchema);
 }

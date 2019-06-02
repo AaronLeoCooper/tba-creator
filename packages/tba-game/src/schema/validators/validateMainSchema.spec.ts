@@ -6,7 +6,7 @@ import SchemaValidationError from '../errors/SchemaValidationError';
 import validateMainSchema from './validateMainSchema';
 
 describe('validateMainSchema', () => {
-  it('Should reject with an SchemaValidationError when a required field is empty', () => {
+  it('Should reject with a SchemaValidationError when a required field is empty', () => {
     const schema = setSchemaDefaults(SchemaType.main, {
       description: { name: '' }
     });
@@ -15,7 +15,7 @@ describe('validateMainSchema', () => {
       validateMainSchema(schema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('main.toml is missing "name" under [description]');
+      expect(err.message).toBe('main.toml is missing "name" at: description');
     }
   });
 

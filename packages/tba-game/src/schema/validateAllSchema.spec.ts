@@ -29,7 +29,10 @@ describe('validateAllSchema', () => {
     expect(validateDictionarySchema).toHaveBeenCalledWith(schemaMap.dictionarySchema);
 
     expect(validateStorySchema).toHaveBeenCalledTimes(1);
-    expect(validateStorySchema).toHaveBeenCalledWith(schemaMap.storySchema);
+    expect(validateStorySchema).toHaveBeenCalledWith(
+      schemaMap.storySchema,
+      schemaMap.dictionarySchema
+    );
   });
 
   it('Should throw an error when main validator throws', () => {
