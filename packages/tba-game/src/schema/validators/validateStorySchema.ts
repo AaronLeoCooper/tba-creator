@@ -87,6 +87,7 @@ const validateDuplicateScenes = (scenes: Scene[], scene: Scene, sceneIndex: numb
 /**
  * Validates all responses for a scene.
  * @param dictionary {DictionarySchema}
+ * @param scenes {Scene[]}
  * @param scene {Scene}
  * @param sceneIndex {number}
  * @throws {SchemaValidationError}
@@ -94,6 +95,7 @@ const validateDuplicateScenes = (scenes: Scene[], scene: Scene, sceneIndex: numb
  */
 const validateResponses = (
   dictionary: DictionarySchema,
+  scenes: Scene[],
   scene: Scene,
   sceneIndex: number
 ): boolean => {
@@ -102,10 +104,14 @@ const validateResponses = (
   if (responses) {
     responses.forEach(
       ({ grammar, description, nextScene }, responseIndex): void => {
+        const responseLocation = [
+          `scenes[${sceneIndex}]`,
+          `responses[${responseIndex}]`
+        ];
+
         if (grammar.length === 0) {
           throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
-            `scenes[${sceneIndex}]`,
-            `responses[${responseIndex}]`,
+            ...responseLocation,
             'grammar'
           ]);
         }
@@ -114,16 +120,50 @@ const validateResponses = (
           throw new SchemaValidationError(
             fileName,
             SchemaValidationErrorType.missingOneOf,
-            [
-              `scenes[${sceneIndex}]`,
-              `responses[${responseIndex}]`,
-              'grammar'
-            ],
+            [...responseLocation, 'grammar'],
             {
               missingFieldNames: ['nextScene', 'description']
             }
           );
         }
+
+        if (nextScene) {
+          const linkedNextScene = scenes.find(
+            (comparedScene): boolean => comparedScene.name === nextScene
+          );
+
+          if (!linkedNextScene) {
+            throw new SchemaValidationError(
+              fileName,
+              SchemaValidationErrorType.invalidReference,
+              [...responseLocation, 'nextScene'],
+              {
+                fieldValue: nextScene,
+                referenceFieldName: 'scenes'
+              }
+            );
+          }
+        }
+
+        grammar.forEach(
+          (phraseReference): void => {
+            const [phraseType, phraseName] = phraseReference.split('.');
+
+            const phrases = dictionary[phraseType];
+
+            if (!phrases || !phrases.some((phrase): boolean => phrase.name === phraseName)) {
+              throw new SchemaValidationError(
+                fileName,
+                SchemaValidationErrorType.invalidReference,
+                [...responseLocation, 'grammar'],
+                {
+                  fieldValue: phraseReference,
+                  referenceFieldName: 'dictionary'
+                }
+              );
+            }
+          }
+        );
       }
     );
   }
@@ -139,7 +179,10 @@ const validateResponses = (
  * @throws {SchemaValidationError}
  * @returns {boolean}
  */
-export default function validateStorySchema(schema: StorySchema, dictionary: DictionarySchema): boolean {
+export default function validateStorySchema(
+  schema: StorySchema,
+  dictionary: DictionarySchema
+): boolean {
   const { scenes } = schema;
 
   if (scenes.length === 0) {
@@ -150,7 +193,7 @@ export default function validateStorySchema(schema: StorySchema, dictionary: Dic
     (scene, sceneIndex): void => {
       validateMandatoryFields(scene, sceneIndex);
       validateDuplicateScenes(scenes, scene, sceneIndex);
-      validateResponses(dictionary, scene, sceneIndex);
+      validateResponses(dictionary, scenes, scene, sceneIndex);
     }
   );
 

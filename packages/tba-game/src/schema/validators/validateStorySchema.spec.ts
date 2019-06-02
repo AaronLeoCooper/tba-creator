@@ -95,7 +95,9 @@ describe('validateStorySchema', () => {
       validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml must have at least one of the following fields: ending, responses at: 3rd scenes');
+      expect(err.message).toBe(
+        'story.toml must have at least one of the following fields: ending, responses at: 3rd scenes'
+      );
     }
   });
 
@@ -114,7 +116,9 @@ describe('validateStorySchema', () => {
       validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml has two scenes with the same "name", check the 1st and 2nd scenes');
+      expect(err.message).toBe(
+        'story.toml has two scenes with the same "name", check the 1st and 2nd scenes'
+      );
     }
   });
 
@@ -127,11 +131,7 @@ describe('validateStorySchema', () => {
           {
             name: 'a',
             description: 'a',
-            responses: [
-              validResponse,
-              validResponse,
-              { grammar: [], nextScene: 'a' }
-            ]
+            responses: [validResponse, validResponse, { grammar: [], nextScene: 'a' }]
           }
         ]
       };
@@ -152,9 +152,55 @@ describe('validateStorySchema', () => {
           {
             name: 'a',
             description: 'a',
+            responses: [validResponse, { grammar: ['actions.open'] }]
+          }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe(
+        'story.toml must have at least one of the following fields: nextScene, description at: 1st scenes > 2nd responses > grammar'
+      );
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene response nextScene references a non-existent scene name', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          {
+            name: 'a',
+            description: 'a',
+            responses: [{ grammar: ['actions.open'], nextScene: 'unknown' }]
+          }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe(
+        'story.toml has a "nextScene" at: 1st scenes > 1st responses, with a value of "unknown", but this doesn\'t exist in scenes'
+      );
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene response grammar entry references a non-existent dictionary phrase type', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          {
+            name: 'a',
+            description: 'a',
             responses: [
               validResponse,
-              { grammar: ['actions.open'] }
+              { grammar: ['colours.red'], nextScene: 'a' }
             ]
           }
         ]
@@ -163,7 +209,35 @@ describe('validateStorySchema', () => {
       validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml must have at least one of the following fields: nextScene, description at: 1st scenes > 2nd responses > grammar');
+      expect(err.message).toBe(
+        'story.toml has a "grammar" at: 1st scenes > 2nd responses, with a value of "colours.red", but this doesn\'t exist in dictionary'
+      );
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene response grammar entry references a non-existent dictionary phrase name', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          {
+            name: 'a',
+            description: 'a',
+            responses: [
+              validResponse,
+              { grammar: ['actions.hop'], nextScene: 'a' }
+            ]
+          }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe(
+        'story.toml has a "grammar" at: 1st scenes > 2nd responses, with a value of "actions.hop", but this doesn\'t exist in dictionary'
+      );
     }
   });
 
