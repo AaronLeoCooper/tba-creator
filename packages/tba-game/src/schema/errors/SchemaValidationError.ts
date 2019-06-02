@@ -3,12 +3,15 @@ export enum SchemaValidationErrorType {
   emptySchema,
   missingField,
   duplicateItemField,
-  missingOneOf
+  missingOneOf,
+  invalidReference
 }
 
 interface ErrorOptions {
   duplicateIndexes?: [number, number];
   missingFieldNames?: string[];
+  fieldValue?: string;
+  referenceFieldName?: string;
 }
 
 /**
@@ -112,6 +115,18 @@ const getSchemaValidationErrorMsg = (
       const { missingFieldNames = [] } = options;
 
       baseMessage = `${fileName} must have at least one of the following fields: ${missingFieldNames.join(', ')}`;
+
+      break;
+    }
+
+    case SchemaValidationErrorType.invalidReference: {
+      const { fieldValue, referenceFieldName } = options;
+
+      baseMessage = `${fileName} has a "${path.pop()}"`;
+
+      const suffixEnd = referenceFieldName ? ` in ${referenceFieldName}` : '';
+
+      messageSuffix = `, with a value of "${fieldValue}", but this doesn\'t exist${suffixEnd}`;
 
       break;
     }

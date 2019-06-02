@@ -6,6 +6,8 @@ import validateStorySchema from './validateStorySchema';
 
 describe('validateStorySchema', () => {
   it('Should throw a SchemaValidationError when scenes is empty', () => {
+    expect.hasAssertions();
+
     try {
       const schema: StorySchema = {
         scenes: []
@@ -19,6 +21,8 @@ describe('validateStorySchema', () => {
   });
 
   it('Should throw a SchemaValidationError when a scene has an empty "name"', () => {
+    expect.hasAssertions();
+
     try {
       const schema: StorySchema = {
         scenes: [
@@ -36,6 +40,8 @@ describe('validateStorySchema', () => {
   });
 
   it('Should throw a SchemaValidationError when a scene has an empty "description"', () => {
+    expect.hasAssertions();
+
     try {
       const schema: StorySchema = {
         scenes: [
@@ -52,24 +58,9 @@ describe('validateStorySchema', () => {
     }
   });
 
-  it('Should throw a SchemaValidationError when two scenes have the same "name"', () => {
-    try {
-      const schema: StorySchema = {
-        scenes: [
-          { name: 'a', description: 'a' },
-          { name: 'a', description: 'a' },
-          { name: 'b', description: 'b' }
-        ]
-      };
-
-      validateStorySchema(schema);
-    } catch (err) {
-      expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml has two scenes with the same "name", check the 1st and 2nd scenes');
-    }
-  });
-
   it('Should throw a SchemaValidationError when a scene has none of: ending, responses', () => {
+    expect.hasAssertions();
+
     try {
       const schema: StorySchema = {
         scenes: [
@@ -86,7 +77,28 @@ describe('validateStorySchema', () => {
     }
   });
 
+  it('Should throw a SchemaValidationError when two scenes have the same "name"', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          { name: 'a', description: 'a', responses: [] },
+          { name: 'a', description: 'a', responses: [] },
+          { name: 'b', description: 'b', ending: true }
+        ]
+      };
+
+      validateStorySchema(schema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe('story.toml has two scenes with the same "name", check the 1st and 2nd scenes');
+    }
+  });
+
   it('Should return true when passed object has no validation errors', () => {
+    expect.hasAssertions();
+
     const schema: StorySchema = {
       scenes: [
         { name: 'a', description: 'a', responses: [] },

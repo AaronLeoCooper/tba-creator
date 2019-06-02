@@ -171,4 +171,46 @@ describe('SchemaValidationError', () => {
       expect(result.message).toBe('filename.toml must have at least one of the following fields: name, description at: root > 3rd parent > child');
     });
   });
+
+  describe('invalidReference', () => {
+    it('Should initialise an invalidReference Error with the expected message when location has 1 entry', () => {
+      const result = new SchemaValidationError(
+        'filename.toml',
+        SchemaValidationErrorType.invalidReference,
+        ['root'],
+        {
+          fieldValue: 'a value'
+        }
+      );
+
+      expect(result.message).toBe('filename.toml has a "root", with a value of "a value", but this doesn\'t exist');
+    });
+
+    it('Should initialise an invalidReference Error with the expected message when there is no referenceFieldName', () => {
+      const result = new SchemaValidationError(
+        'filename.toml',
+        SchemaValidationErrorType.invalidReference,
+        ['root', 'parent'],
+        {
+          fieldValue: 'a value'
+        }
+      );
+
+      expect(result.message).toBe('filename.toml has a "parent" at: root, with a value of "a value", but this doesn\'t exist');
+    });
+
+    it('Should initialise an invalidReference Error with the expected message when a referenceFieldName is provided', () => {
+      const result = new SchemaValidationError(
+        'filename.toml',
+        SchemaValidationErrorType.invalidReference,
+        ['root', 'parent', 'child'],
+        {
+          fieldValue: 'a value',
+          referenceFieldName: 'otherField'
+        }
+      );
+
+      expect(result.message).toBe('filename.toml has a "child" at: root > parent, with a value of "a value", but this doesn\'t exist in otherField');
+    });
+  });
 });
