@@ -1,6 +1,7 @@
 import { DictionarySchema } from '../../types/DictionarySchema';
 
 import SchemaValidationError, { SchemaValidationErrorType } from '../errors/SchemaValidationError';
+import getNextDuplicateIndex from './getNextDuplicateIndex';
 
 const fileName = 'dictionary.toml';
 
@@ -33,10 +34,10 @@ export default function validateDictionarySchema(schema: DictionarySchema): bool
             ]);
           }
 
-          const duplicateItemIndex = dictionaryItems.findIndex(
-            (dictionaryItem, duplicateIndex): boolean => {
-              return name === dictionaryItem.name && duplicateIndex !== itemIndex;
-            }
+          const duplicateItemIndex = getNextDuplicateIndex(
+            dictionaryItems,
+            ['name', name],
+            itemIndex
           );
 
           if (duplicateItemIndex > -1) {

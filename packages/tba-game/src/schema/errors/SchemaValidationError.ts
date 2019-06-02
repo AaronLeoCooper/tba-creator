@@ -2,11 +2,13 @@ export enum SchemaValidationErrorType {
   emptyField,
   emptySchema,
   missingField,
-  duplicateItemField
+  duplicateItemField,
+  missingOneOf
 }
 
 interface ErrorOptions {
   duplicateIndexes?: [number, number];
+  missingFieldNames?: string[];
 }
 
 /**
@@ -69,31 +71,29 @@ const getSchemaValidationErrorMsg = (
   location: string[],
   options: ErrorOptions
 ): string => {
-  const fieldName = location.slice(-1)[0];
-  let path = location.slice(0, -1);
+  const path = location.slice(0);
 
   let baseMessage = '';
   let messageSuffix = '';
 
   switch (errorType) {
     case SchemaValidationErrorType.emptyField:
-      baseMessage = `${fileName} has an empty "${fieldName}"`;
+      baseMessage = `${fileName} has an empty "${path.pop()}"`;
       break;
 
     case SchemaValidationErrorType.emptySchema:
-      baseMessage = `${fileName} must contain at least one "${fieldName}"`;
+      baseMessage = `${fileName} must contain at least one "${path.pop()}"`;
       break;
 
     case SchemaValidationErrorType.missingField:
-      baseMessage = `${fileName} is missing "${fieldName}"`;
+      baseMessage = `${fileName} is missing "${path.pop()}"`;
       break;
 
     case SchemaValidationErrorType.duplicateItemField: {
       const { duplicateIndexes = [] } = options;
 
-      const parentFieldName = path.slice(-1)[0] || 'items';
-
-      path = path.slice(0, -1);
+      const fieldName = path.pop();
+      const parentFieldName = path.pop() || 'items';
 
       baseMessage = `${fileName} has two ${parentFieldName} with the same "${fieldName}"`;
 
@@ -104,6 +104,14 @@ const getSchemaValidationErrorMsg = (
             secondIndex
           )} ${parentFieldName}`
         : '';
+
+      break;
+    }
+
+    case SchemaValidationErrorType.missingOneOf: {
+      const { missingFieldNames = [] } = options;
+
+      baseMessage = `${fileName} must have at least one of the following fields: ${missingFieldNames.join(', ')}`;
 
       break;
     }

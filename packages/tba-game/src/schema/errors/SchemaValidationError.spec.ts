@@ -143,4 +143,32 @@ describe('SchemaValidationError', () => {
       expect(result.message).toBe('filename.toml has two children with the same "sub child" at: 42nd root > parent, check the 3rd and 18th children');
     });
   });
+
+  describe('missingOneOf', () => {
+    it('Should initialise a missingOneOf Error with the expected message when location has 1 entry', () => {
+      const result = new SchemaValidationError(
+        'filename.toml',
+        SchemaValidationErrorType.missingOneOf,
+        ['root'],
+        {
+          missingFieldNames: ['name', 'description']
+        }
+      );
+
+      expect(result.message).toBe('filename.toml must have at least one of the following fields: name, description at: root');
+    });
+
+    it('Should initialise a missingOneOf Error with the expected message when location has several entries', () => {
+      const result = new SchemaValidationError(
+        'filename.toml',
+        SchemaValidationErrorType.missingOneOf,
+        ['root', 'parent[2]', 'child'],
+        {
+          missingFieldNames: ['name', 'description']
+        }
+      );
+
+      expect(result.message).toBe('filename.toml must have at least one of the following fields: name, description at: root > 3rd parent > child');
+    });
+  });
 });
