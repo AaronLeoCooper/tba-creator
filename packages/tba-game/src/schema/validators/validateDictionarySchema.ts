@@ -12,11 +12,47 @@ const fileName = 'dictionary.toml';
  * @returns {boolean}
  */
 export default function validateDictionarySchema(schema: DictionarySchema): boolean {
-  if (Object.keys(schema).length === 0) {
+  const phraseTypes = Object.keys(schema);
+
+  if (phraseTypes.length === 0) {
     throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptySchema, [
       'phrase type'
     ]);
   }
+
+  phraseTypes.forEach(
+    (phraseType): void => {
+      const dictionaryItems = schema[phraseType];
+
+      dictionaryItems.forEach(
+        ({ name }, itemIndex): void => {
+          if (!name) {
+            throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
+              `${phraseType}[${itemIndex}]`,
+              'name'
+            ]);
+          }
+
+          const duplicateItemIndex = dictionaryItems.findIndex(
+            (dictionaryItem, duplicateIndex): boolean => {
+              return name === dictionaryItem.name && duplicateIndex !== itemIndex;
+            }
+          );
+
+          if (duplicateItemIndex > -1) {
+            throw new SchemaValidationError(
+              fileName,
+              SchemaValidationErrorType.duplicateItemField,
+              ['actions', 'name'],
+              {
+                duplicateIndexes: [itemIndex, duplicateItemIndex]
+              }
+            );
+          }
+        }
+      );
+    }
+  );
 
   return true;
 }

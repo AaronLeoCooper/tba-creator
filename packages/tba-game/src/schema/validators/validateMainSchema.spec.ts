@@ -6,7 +6,7 @@ import SchemaValidationError from '../errors/SchemaValidationError';
 import validateMainSchema from './validateMainSchema';
 
 describe('validateMainSchema', () => {
-  it('Should reject with an SchemaValidationError when a required field is empty', () => {
+  it('Should reject with a SchemaValidationError when a required field is empty', () => {
     const schema = setSchemaDefaults(SchemaType.main, {
       description: { name: '' }
     });
