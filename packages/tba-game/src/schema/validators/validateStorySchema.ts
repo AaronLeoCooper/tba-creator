@@ -2,10 +2,9 @@ import { Scene, StorySchema } from '../../types/StorySchema';
 
 import SchemaValidationError, { SchemaValidationErrorType } from '../errors/SchemaValidationError';
 import getNextDuplicateIndex from './getNextDuplicateIndex';
+import { DictionarySchema } from '../../types/DictionarySchema';
 
 const fileName = 'story.toml';
-
-const oneOfSceneFields: (keyof Scene)[] = ['ending', 'responses'];
 
 /**
  * Validates mandatory scene fields.
@@ -15,7 +14,7 @@ const oneOfSceneFields: (keyof Scene)[] = ['ending', 'responses'];
  * @returns {boolean}
  */
 const validateMandatoryFields = (scene: Scene, sceneIndex: number): boolean => {
-  const { name, description } = scene;
+  const { name, description, responses, ending } = scene;
 
   if (!name) {
     throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
@@ -30,6 +29,15 @@ const validateMandatoryFields = (scene: Scene, sceneIndex: number): boolean => {
       'description'
     ]);
   }
+
+  if (!ending && responses && responses.length === 0) {
+    throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
+      `scenes[${sceneIndex}]`,
+      'responses'
+    ]);
+  }
+
+  const oneOfSceneFields: (keyof Scene)[] = ['ending', 'responses'];
 
   const missingOneOfSceneFields = !oneOfSceneFields.some(
     (fieldName): boolean => Boolean(scene[fieldName])
@@ -77,13 +85,61 @@ const validateDuplicateScenes = (scenes: Scene[], scene: Scene, sceneIndex: numb
 };
 
 /**
- * Validates a story schema object.
- * An error is thrown when validation fails, otherwise true is returned.
- * @param schema {StorySchema}
+ * Validates all responses for a scene.
+ * @param dictionary {DictionarySchema}
+ * @param scene {Scene}
+ * @param sceneIndex {number}
  * @throws {SchemaValidationError}
  * @returns {boolean}
  */
-export default function validateStorySchema(schema: StorySchema): boolean {
+const validateResponses = (
+  dictionary: DictionarySchema,
+  scene: Scene,
+  sceneIndex: number
+): boolean => {
+  const { responses } = scene;
+
+  if (responses) {
+    responses.forEach(
+      ({ grammar, description, nextScene }, responseIndex): void => {
+        if (grammar.length === 0) {
+          throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [
+            `scenes[${sceneIndex}]`,
+            `responses[${responseIndex}]`,
+            'grammar'
+          ]);
+        }
+
+        if (!description && !nextScene) {
+          throw new SchemaValidationError(
+            fileName,
+            SchemaValidationErrorType.missingOneOf,
+            [
+              `scenes[${sceneIndex}]`,
+              `responses[${responseIndex}]`,
+              'grammar'
+            ],
+            {
+              missingFieldNames: ['nextScene', 'description']
+            }
+          );
+        }
+      }
+    );
+  }
+
+  return true;
+};
+
+/**
+ * Validates a story schema object.
+ * An error is thrown when validation fails, otherwise true is returned.
+ * @param schema {StorySchema}
+ * @param dictionary {DictionarySchema}
+ * @throws {SchemaValidationError}
+ * @returns {boolean}
+ */
+export default function validateStorySchema(schema: StorySchema, dictionary: DictionarySchema): boolean {
   const { scenes } = schema;
 
   if (scenes.length === 0) {
@@ -91,9 +147,10 @@ export default function validateStorySchema(schema: StorySchema): boolean {
   }
 
   scenes.forEach(
-    (item, itemIndex): void => {
-      validateMandatoryFields(item, itemIndex);
-      validateDuplicateScenes(scenes, item, itemIndex);
+    (scene, sceneIndex): void => {
+      validateMandatoryFields(scene, sceneIndex);
+      validateDuplicateScenes(scenes, scene, sceneIndex);
+      validateResponses(dictionary, scene, sceneIndex);
     }
   );
 

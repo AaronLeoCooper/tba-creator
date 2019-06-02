@@ -1,3 +1,5 @@
+import { dictionarySchema } from '../__mocks__/mockSchema';
+
 import { StorySchema } from '../../types/StorySchema';
 
 import SchemaValidationError from '../errors/SchemaValidationError';
@@ -5,6 +7,9 @@ import SchemaValidationError from '../errors/SchemaValidationError';
 import validateStorySchema from './validateStorySchema';
 
 describe('validateStorySchema', () => {
+  const validResponse = { grammar: ['actions.open'], nextScene: 'a' };
+  const validResponses = [validResponse, validResponse];
+
   it('Should throw a SchemaValidationError when scenes is empty', () => {
     expect.hasAssertions();
 
@@ -13,7 +18,7 @@ describe('validateStorySchema', () => {
         scenes: []
       };
 
-      validateStorySchema(schema);
+      validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
       expect(err.message).toBe('story.toml has an empty "scenes"');
@@ -26,16 +31,15 @@ describe('validateStorySchema', () => {
     try {
       const schema: StorySchema = {
         scenes: [
-          { name: 'a', description: 'a', responses: [] },
-          { name: 'b', description: 'b', responses: [] },
-          { name: '', description: 'c', ending: true }
+          { name: 'a', description: 'a', responses: validResponses },
+          { name: '', description: 'b', ending: true }
         ]
       };
 
-      validateStorySchema(schema);
+      validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml has an empty "name" at: 3rd scenes');
+      expect(err.message).toBe('story.toml has an empty "name" at: 2nd scenes');
     }
   });
 
@@ -45,16 +49,34 @@ describe('validateStorySchema', () => {
     try {
       const schema: StorySchema = {
         scenes: [
-          { name: 'a', description: '' },
-          { name: 'b', description: 'b' },
-          { name: 'c', description: 'c' }
+          { name: 'a', description: '', responses: validResponses },
+          { name: 'b', description: 'b', responses: validResponses },
+          { name: 'c', description: 'c', responses: validResponses }
         ]
       };
 
-      validateStorySchema(schema);
+      validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
       expect(err.message).toBe('story.toml has an empty "description" at: 1st scenes');
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene has an empty "responses"', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          { name: 'a', description: 'a', responses: validResponses },
+          { name: 'b', description: 'b', responses: [] }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe('story.toml has an empty "responses" at: 2nd scenes');
     }
   });
 
@@ -64,16 +86,16 @@ describe('validateStorySchema', () => {
     try {
       const schema: StorySchema = {
         scenes: [
-          { name: 'a', description: 'a', responses: [] },
-          { name: 'b', description: 'b' },
-          { name: 'c', description: 'c', ending: true }
+          { name: 'a', description: 'a', responses: validResponses },
+          { name: 'b', description: 'b', ending: true },
+          { name: 'c', description: 'c' }
         ]
       };
 
-      validateStorySchema(schema);
+      validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('story.toml must have at least one of the following fields: ending, responses at: 2nd scenes');
+      expect(err.message).toBe('story.toml must have at least one of the following fields: ending, responses at: 3rd scenes');
     }
   });
 
@@ -83,16 +105,65 @@ describe('validateStorySchema', () => {
     try {
       const schema: StorySchema = {
         scenes: [
-          { name: 'a', description: 'a', responses: [] },
-          { name: 'a', description: 'a', responses: [] },
+          { name: 'a', description: 'a', responses: validResponses },
+          { name: 'a', description: 'a', responses: validResponses },
           { name: 'b', description: 'b', ending: true }
         ]
       };
 
-      validateStorySchema(schema);
+      validateStorySchema(schema, dictionarySchema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
       expect(err.message).toBe('story.toml has two scenes with the same "name", check the 1st and 2nd scenes');
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene response has no grammar', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          {
+            name: 'a',
+            description: 'a',
+            responses: [
+              validResponse,
+              validResponse,
+              { grammar: [], nextScene: 'a' }
+            ]
+          }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe('story.toml has an empty "grammar" at: 1st scenes > 3rd responses');
+    }
+  });
+
+  it('Should throw a SchemaValidationError when a scene response has none of: nextScene, description', () => {
+    expect.hasAssertions();
+
+    try {
+      const schema: StorySchema = {
+        scenes: [
+          {
+            name: 'a',
+            description: 'a',
+            responses: [
+              validResponse,
+              { grammar: ['actions.open'] }
+            ]
+          }
+        ]
+      };
+
+      validateStorySchema(schema, dictionarySchema);
+    } catch (err) {
+      expect(err).toBeInstanceOf(SchemaValidationError);
+      expect(err.message).toBe('story.toml must have at least one of the following fields: nextScene, description at: 1st scenes > 2nd responses > grammar');
     }
   });
 
@@ -101,13 +172,13 @@ describe('validateStorySchema', () => {
 
     const schema: StorySchema = {
       scenes: [
-        { name: 'a', description: 'a', responses: [] },
-        { name: 'b', description: 'b', responses: [] },
+        { name: 'a', description: 'a', responses: validResponses },
+        { name: 'b', description: 'b', responses: validResponses },
         { name: 'c', description: 'c', ending: true }
       ]
     };
 
-    const result = validateStorySchema(schema);
+    const result = validateStorySchema(schema, dictionarySchema);
 
     expect(result).toBe(true);
   });
