@@ -15,7 +15,7 @@ describe('validateMainSchema', () => {
       validateMainSchema(schema);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('main.toml is missing "name" under [description]');
+      expect(err.message).toBe('main.toml is missing "name" at: description');
     }
   });
 

@@ -39,18 +39,16 @@ describe('validateDictionarySchema', () => {
     expect.hasAssertions();
 
     const dictionary = {
-      actions: [
-        { name: 'a', aka: ['something'] },
-        { name: 'b' },
-        { name: 'b', aka: ['something'] }
-      ]
+      actions: [{ name: 'a', aka: ['something'] }, { name: 'b' }, { name: 'b', aka: ['something'] }]
     };
 
     try {
       validateDictionarySchema(dictionary);
     } catch (err) {
       expect(err).toBeInstanceOf(SchemaValidationError);
-      expect(err.message).toBe('dictionary.toml has two actions with the same "name", check the 2nd and 3rd actions');
+      expect(err.message).toBe(
+        'dictionary.toml has two actions with the same "name", check the 2nd and 3rd actions'
+      );
     }
   });
 

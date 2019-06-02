@@ -198,10 +198,7 @@ describe('validateStorySchema', () => {
           {
             name: 'a',
             description: 'a',
-            responses: [
-              validResponse,
-              { grammar: ['colours.red'], nextScene: 'a' }
-            ]
+            responses: [validResponse, { grammar: ['colours.red'], nextScene: 'a' }]
           }
         ]
       };
@@ -224,10 +221,7 @@ describe('validateStorySchema', () => {
           {
             name: 'a',
             description: 'a',
-            responses: [
-              validResponse,
-              { grammar: ['actions.hop'], nextScene: 'a' }
-            ]
+            responses: [validResponse, { grammar: ['actions.hop'], nextScene: 'a' }]
           }
         ]
       };

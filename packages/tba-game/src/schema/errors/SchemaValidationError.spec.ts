@@ -29,7 +29,9 @@ describe('SchemaValidationError', () => {
         ['root[11]', 'parent', 'child[0]', 'sub child']
       );
 
-      expect(result.message).toBe('filename.toml has an empty "sub child" at: 12th root > parent > 1st child');
+      expect(result.message).toBe(
+        'filename.toml has an empty "sub child" at: 12th root > parent > 1st child'
+      );
     });
   });
 
@@ -97,7 +99,9 @@ describe('SchemaValidationError', () => {
         ['root[1]', 'parent[33]', 'child', 'sub child']
       );
 
-      expect(result.message).toBe('filename.toml is missing "sub child" at: 2nd root > 34th parent > child');
+      expect(result.message).toBe(
+        'filename.toml is missing "sub child" at: 2nd root > 34th parent > child'
+      );
     });
   });
 
@@ -129,7 +133,9 @@ describe('SchemaValidationError', () => {
         ['root', 'parent[5]', 'children', 'sub child']
       );
 
-      expect(result.message).toBe('filename.toml has two children with the same "sub child" at: root > 6th parent');
+      expect(result.message).toBe(
+        'filename.toml has two children with the same "sub child" at: root > 6th parent'
+      );
     });
 
     it('Should initialise a duplicateItemField Error with item counts when duplicateIndexes is passed as an option', () => {
@@ -140,7 +146,9 @@ describe('SchemaValidationError', () => {
         { duplicateIndexes: [2, 17] }
       );
 
-      expect(result.message).toBe('filename.toml has two children with the same "sub child" at: 42nd root > parent, check the 3rd and 18th children');
+      expect(result.message).toBe(
+        'filename.toml has two children with the same "sub child" at: 42nd root > parent, check the 3rd and 18th children'
+      );
     });
   });
 
@@ -155,7 +163,9 @@ describe('SchemaValidationError', () => {
         }
       );
 
-      expect(result.message).toBe('filename.toml must have at least one of the following fields: name, description at: root');
+      expect(result.message).toBe(
+        'filename.toml must have at least one of the following fields: name, description at: root'
+      );
     });
 
     it('Should initialise a missingOneOf Error with the expected message when location has several entries', () => {
@@ -168,7 +178,9 @@ describe('SchemaValidationError', () => {
         }
       );
 
-      expect(result.message).toBe('filename.toml must have at least one of the following fields: name, description at: root > 3rd parent > child');
+      expect(result.message).toBe(
+        'filename.toml must have at least one of the following fields: name, description at: root > 3rd parent > child'
+      );
     });
   });
 
@@ -183,7 +195,9 @@ describe('SchemaValidationError', () => {
         }
       );
 
-      expect(result.message).toBe('filename.toml has a "root", with a value of "a value", but this doesn\'t exist');
+      expect(result.message).toBe(
+        'filename.toml has a "root", with a value of "a value", but this doesn\'t exist'
+      );
     });
 
     it('Should initialise an invalidReference Error with the expected message when there is no referenceFieldName', () => {
@@ -196,7 +210,9 @@ describe('SchemaValidationError', () => {
         }
       );
 
-      expect(result.message).toBe('filename.toml has a "parent" at: root, with a value of "a value", but this doesn\'t exist');
+      expect(result.message).toBe(
+        'filename.toml has a "parent" at: root, with a value of "a value", but this doesn\'t exist'
+      );
     });
 
     it('Should initialise an invalidReference Error with the expected message when a referenceFieldName is provided', () => {
@@ -210,7 +226,9 @@ describe('SchemaValidationError', () => {
         }
       );
 
-      expect(result.message).toBe('filename.toml has a "child" at: root > parent, with a value of "a value", but this doesn\'t exist in otherField');
+      expect(result.message).toBe(
+        'filename.toml has a "child" at: root > parent, with a value of "a value", but this doesn\'t exist in otherField'
+      );
     });
   });
 });

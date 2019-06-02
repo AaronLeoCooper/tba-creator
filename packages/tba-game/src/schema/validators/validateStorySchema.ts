@@ -104,10 +104,7 @@ const validateResponses = (
   if (responses) {
     responses.forEach(
       ({ grammar, description, nextScene }, responseIndex): void => {
-        const responseLocation = [
-          `scenes[${sceneIndex}]`,
-          `responses[${responseIndex}]`
-        ];
+        const responseLocation = [`scenes[${sceneIndex}]`, `responses[${responseIndex}]`];
 
         if (grammar.length === 0) {
           throw new SchemaValidationError(fileName, SchemaValidationErrorType.emptyField, [

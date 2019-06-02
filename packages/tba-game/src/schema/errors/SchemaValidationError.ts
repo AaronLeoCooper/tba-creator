@@ -114,7 +114,9 @@ const getSchemaValidationErrorMsg = (
     case SchemaValidationErrorType.missingOneOf: {
       const { missingFieldNames = [] } = options;
 
-      baseMessage = `${fileName} must have at least one of the following fields: ${missingFieldNames.join(', ')}`;
+      baseMessage = `${fileName} must have at least one of the following fields: ${missingFieldNames.join(
+        ', '
+      )}`;
 
       break;
     }
